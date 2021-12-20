@@ -18,19 +18,19 @@
               <li>
                 <a class="profile-dropdown" href="#pablo">
                   <span class="sidebar-mini">MP</span>
-                  <span class="sidebar-normal">My Profile</span>
+                  <span class="sidebar-normal">Mi Perfil</span>
                 </a>
               </li>
               <li>
                 <a class="profile-dropdown" href="#pablo">
                   <span class="sidebar-mini">EP</span>
-                  <span class="sidebar-normal">Edit Profile</span>
+                  <span class="sidebar-normal">Editar Perfil</span>
                 </a>
               </li>
               <li>
                 <a class="profile-dropdown" href="#pablo">
-                  <span class="sidebar-mini">S</span>
-                  <span class="sidebar-normal">Settings</span>
+                  <span class="sidebar-mini">A</span>
+                  <span class="sidebar-normal">Ajustes</span>
                 </a>
               </li>
             </slot>
@@ -50,7 +50,7 @@
     props: {
       title: {
         type: String,
-        default: 'Tania Andrew'
+        default: 'Rafael Echeverria'
       }
     },
     data () {

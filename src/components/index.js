@@ -16,8 +16,9 @@ import StatsCard from './Cards/StatsCard.vue'
 import Breadcrumb from './Breadcrumb/Breadcrumb.vue'
 import BreadcrumbItem from './Breadcrumb/BreadcrumbItem.vue'
 
-import Pagination from './Pagination.vue'
 import Paginacion from './Paginacion.vue'
+import Cabecera from './Cabecera.vue' //Cabecera de las tablas
+import Load from './Loading.vue' //Cabecera de las tablas
 
 import SidebarPlugin from './SidebarPlugin'
 
@@ -25,8 +26,9 @@ let components = {
   Checkbox,
   Switch,
   Progress,
-  Pagination,
   Paginacion,
+  Cabecera,
+  Load,
   Radio,
   FormGroupInput,
   Card,
@@ -43,8 +45,9 @@ export {
   Checkbox,
   Switch,
   Progress,
-  Pagination,
   Paginacion,
+  Cabecera,
+  Load,
   Radio,
   FormGroupInput,
   Card,

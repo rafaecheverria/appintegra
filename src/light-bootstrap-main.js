@@ -18,7 +18,7 @@ locale.use(lang)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'vue-nav-tabs/themes/vue-tabs.scss'
 import './assets/sass/light-bootstrap-dashboard.scss'
-import './assets/css/demo.css'
+//import './assets/css/demo.css'
 
 export default {
   async install (Vue) {

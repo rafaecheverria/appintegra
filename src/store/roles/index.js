@@ -4,41 +4,32 @@ import { getField, updateField } from 'vuex-map-fields';
 export default {
   namespaced: true,
   state: {
-    usersState: {},
+    rolesState: {},
     pagination: {},
     offset: 4,
     dialog: false,
-    loading: true,
+    //loading: true,
     buscar: '',
-    title: 'Usuarios',
-    category: 'Información exclusiva del administrador del sistema',
-    form: {
-      nombres: '',
-      apellidos: '',
-      email: '',
-      fecha_nacimiento: '',
-      genero: '',
-      direccion: '',
-    }
+    title: 'Roles',
+    category: 'Información exclusiva del administrador del sistema'
   },
 
   getters: {
     getField,
+    dialog: state => state.dialog,
   },
+
   mutations: {
     updateField,
 
-    GET_USERS(state, usersAccion) {
-      state.usersState = usersAccion
+    GET_ROLES(state, rolesAccion) {
+      state.rolesState = rolesAccion
     },
-    GET_PAGINATION(state, usersAccion) {
-      state.pagination = usersAccion
+    GET_PAGINATION(state, rolesAccion) {
+      state.pagination = rolesAccion
     },
-    SET_CURRENT_PAGE(state, data) {
-      state.pagination.current_page = data;
-    },
-    REFRESH_USERS(state, user) {
-      state.usersState.push(user)
+    REFRESH_ROLES(state, rol) {
+      state.rolesState.push(rol)
     },
     OPEN_DIALOG(state) {
       state.dialog = true
@@ -53,11 +44,12 @@ export default {
   },
 
   actions: {
-    async getUsers({ dispatch, commit, state }, page) {
-      let url = '/users?page='+ page + '&buscar='+ state.buscar
+    async getRoles({ dispatch, commit, state }, page) {
+      let url = '/roles?page='+ page + '&buscar='+ state.buscar
       await axios.get(url)
         .then((response) => {
-          commit('GET_USERS', response.data.users)
+          console.log(response)
+          commit('GET_ROLES', response.data.roles)
           commit('GET_PAGINATION', response.data.pagination)
           dispatch('loading/loading', false, { root: true })
         })

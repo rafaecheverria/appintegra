@@ -97,11 +97,11 @@ import { mapActions, mapGetters} from 'vuex'
           logout  : 'auth/logout',
           drawer  : 'layouts/drawer'
        }),
-        
-        async salir() {
-            await this.logout()
-            await this.$router.push({ name: 'Login' })
-        },
+
+      async salir() {
+          await this.logout()
+          await this.$router.push({ name: 'Login' })
+      },
       capitalizeFirstLetter (string) {
         return string.charAt(0).toUpperCase() + string.slice(1)
       },

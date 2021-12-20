@@ -8,18 +8,20 @@
     </div>
 </template>
 <script>
+
 import { mapState } from 'vuex'
 import {Cabecera} from '@/components/index'
 import Buscador from './Buscar.vue'
-import Lista from './ListUsers.vue'
+import Lista from './ListPermisos.vue'
 export default{
   computed: {
-      ...mapState('users', ['title', 'category']),
+      ...mapState('permisos', ['title', 'category']),
     },
-    components: {
-      Buscador,
-      Cabecera,
-      Lista,
-    },
+  components: {
+    Buscador,
+    Cabecera,
+    Lista,
+  },
 }
 </script>
+

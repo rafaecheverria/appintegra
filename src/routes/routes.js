@@ -10,44 +10,14 @@ import Stats from 'src/pages/Dashboard/Dashboard/Stats.vue'
 
 // Pages
 import User from 'src/pages/Dashboard/Users'
-import TimeLine from 'src/pages/Dashboard/Pages/TimeLinePage.vue'
+import Form from 'src/pages/Dashboard/Users/Form'
 import Login from 'src/pages/Auth/Login.vue'
-import Register from 'src/pages/Auth/Register.vue'
-import Lock from 'src/pages/Auth/Lock.vue'
-
-// Components pages
-import Buttons from 'src/pages/Dashboard/Components/Buttons.vue'
-import GridSystem from 'src/pages/Dashboard/Components/GridSystem.vue'
-import Panels from 'src/pages/Dashboard/Components/Panels.vue'
-const SweetAlert = () => import('src/pages/Dashboard/Components/SweetAlert.vue')
-import Notifications from 'src/pages/Dashboard/Components/Notifications.vue'
-import Icons from 'src/pages/Dashboard/Components/Icons.vue'
-import Typography from 'src/pages/Dashboard/Components/Typography.vue'
-
-
-// Forms pages
-const RegularForms = () => import('src/pages/Dashboard/Forms/RegularForms.vue')
-const ExtendedForms = () => import('src/pages/Dashboard/Forms/ExtendedForms.vue')
-const ValidationForms = () => import('src/pages/Dashboard/Forms/ValidationForms.vue')
-const Wizard = () => import('src/pages/Dashboard/Forms/Wizard.vue')
-
-// TableList pages
-const RegularTables = () => import('src/pages/Dashboard/Tables/RegularTables.vue')
-const ExtendedTables = () => import('src/pages/Dashboard/Tables/ExtendedTables.vue')
-const PaginatedTables = () => import('src/pages/Dashboard/Tables/PaginatedTables.vue')
-// Maps pages
-const GoogleMaps = () => import('src/pages/Dashboard/Maps/GoogleMaps.vue')
-const FullScreenMap = () => import('src/pages/Dashboard/Maps/FullScreenMap.vue')
-const VectorMaps = () => import('src/pages/Dashboard/Maps/VectorMapsPage.vue')
-
-// Calendar
-const Calendar = () => import('src/pages/Dashboard/Calendar/CalendarRoute.vue')
-// Charts
-const Charts = () => import('src/pages/Dashboard/Charts.vue')
 
 // Nuevos componentes
 const Users = () => import('src/pages/Dashboard/Users')
 const Home = () => import('src/pages/Dashboard/Dashboard/Home.vue')
+const Role = () => import('src/pages/Dashboard/Roles')
+const Permissions = () => import('src/pages/Dashboard/Permisos')
 
 let componentsMenu = {
   path: '/components',
@@ -57,37 +27,30 @@ let componentsMenu = {
     {
       path: 'buttons',
       name: 'Buttons',
-      component: Buttons
     },
     {
       path: 'grid-system',
       name: 'Grid System',
-      component: GridSystem
     },
     {
       path: 'panels',
       name: 'Panels',
-      component: Panels
     },
     {
       path: 'sweet-alert',
       name: 'Sweet Alert',
-      component: SweetAlert
     },
     {
       path: 'notifications',
       name: 'Notifications',
-      component: Notifications
     },
     {
       path: 'icons',
       name: 'Icons',
-      component: Icons
     },
     {
       path: 'typography',
       name: 'Typography',
-      component: Typography
     }
 
   ]
@@ -100,22 +63,18 @@ let formsMenu = {
     {
       path: 'regular',
       name: 'Regular Forms',
-      component: RegularForms
     },
     {
       path: 'extended',
       name: 'Extended Forms',
-      component: ExtendedForms
     },
     {
       path: 'validation',
       name: 'Validation Forms',
-      component: ValidationForms
     },
     {
       path: 'wizard',
       name: 'Wizard',
-      component: Wizard
     }
   ]
 }
@@ -128,17 +87,14 @@ let tablesMenu = {
     {
       path: 'regular',
       name: 'Regular Tables',
-      component: RegularTables
     },
     {
       path: 'extended',
       name: 'Extended Tables',
-      component: ExtendedTables
     },
     {
       path: 'paginated',
       name: 'Paginated Tables',
-      component: PaginatedTables
     }]
 }
 
@@ -150,17 +106,14 @@ let mapsMenu = {
     {
       path: 'google',
       name: 'Google Maps',
-      component: GoogleMaps
     },
     {
       path: 'full-screen',
       name: 'Full Screen Map',
-      component: FullScreenMap
     },
     {
       path: 'vector-map',
       name: 'Vector Map',
-      component: VectorMaps
     }
   ]
 }
@@ -173,7 +126,6 @@ let pagesMenu = {
     {
       path: 'timeline',
       name: 'Timeline Page',
-      component: TimeLine
     },
     {
       path: 'users',
@@ -194,6 +146,21 @@ let configMenu = {
       name: 'User Page',
       component: User
     },
+    {
+      path: 'user/form',
+      name: 'User Form',
+      component: Form
+    },
+    {
+      path: 'roles',
+      name: 'Roles',
+      component: Role
+    },
+    {
+      path: 'permisos',
+      name: 'Permisos',
+      component: Permissions
+    },
   ]
 }
 
@@ -204,20 +171,6 @@ let loginPage = {
   beforeEnter: middleware.guest,
 }
 
-let registerPage = {
-  path: '/register',
-  name: 'Register',
-  component: Register,
-  beforeEnter: middleware.guest,
-}
-
-let lockPage = {
-  path: '/lock',
-  name: 'Lock',
-  component: Lock,
-  beforeEnter: middleware.user,
-}
-
 const routes = [
   componentsMenu,
   formsMenu,
@@ -225,8 +178,6 @@ const routes = [
   mapsMenu,
   pagesMenu,
   loginPage,
-  registerPage,
-  lockPage,
   configMenu,
   {
     path: '/',
@@ -243,19 +194,16 @@ const routes = [
       {
         path: 'stats',
         name: 'Stats',
-        component: Stats,
         beforeEnter: middleware.user,
       },
       {
         path: 'calendar',
         name: 'Calendar',
-        component: Calendar,
         beforeEnter: middleware.user,
       },
       {
         path: 'charts',
         name: 'Charts',
-        component: Charts,
         beforeEnter: middleware.user,
       }
     ]

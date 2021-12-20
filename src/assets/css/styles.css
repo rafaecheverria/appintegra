@@ -1,0 +1,48 @@
+.el-dialog {
+  width: 50%;
+}
+@media (max-width: 800px){
+  .el-dialog{
+    width: 90%
+  }
+}
+.el-table .cell, .el-table th div {
+  padding-right: 0px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* .container-fluid {
+  width: 100%;
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-right: auto;
+  margin-left: auto;
+} */
+.el-dialog__wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  margin: -80px 0 0 0;
+}
+.main-panel .content {
+  padding: 10px 10px;
+}
+
+.el-select {
+display: block;
+}
+
+.el-dialog__header {
+ background: #172944;
+ color: white;
+  margin: 0px 0 0px -5px;
+  font-size: 13px;
+  border-radius: 0 0 0 6px;
+}
+
+.size{
+font-size: 12px;
+}

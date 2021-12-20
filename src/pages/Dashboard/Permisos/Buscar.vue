@@ -16,27 +16,23 @@
         </div>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions } from 'vuex'
 import { mapFields } from 'vuex-map-fields';
-//import Agregar from './Agregar.vue'
+
 export default {
     computed: {
-      ...mapState('users', ['dialog']),
-      ...mapFields('users', [ 'buscar']),
+      ...mapFields('permisos', [ 'buscar']),
     },
      methods: {
-      ...mapActions({
-          getUsers:   'users/getUsers', // Trae todos los usuarios
-          openDialog: 'users/openDialog',
-      }),
-      ...mapActions({loading: 'loading/loading'}),
+      ...mapActions({getPermisos:'permisos/getPermisos'}), // Trae todos los roles
+      ...mapActions({loading: 'loading/loading'}), // Carga el Load de la tabla
 
       async routeAgregar() {
           await this.$router.push({ name: 'User Form' })
       },
       search(page) {
         this.loading(true)
-        this.getUsers(page)
+        this.getPermisos(page)
       }
     },
 }

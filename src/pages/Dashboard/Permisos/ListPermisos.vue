@@ -1,17 +1,11 @@
 <template>
-    <div class="row">
+     <div class="row">
         <div class="col-sm-12">
             <div class="vld-parent">
-            <el-table :lazy="false" :data="usersState.data" :emptyText="vacio">
+            <el-table :lazy="false" :data="permisosState.data" :emptyText="vacio">
                 <el-table-column type="index"></el-table-column>
-                <el-table-column prop="nombres"
+                <el-table-column prop="name"
                                 label="Name">
-                </el-table-column>
-                <el-table-column prop="apellidos"
-                                label="Job Position">
-                </el-table-column>
-                <el-table-column prop="email"
-                                label="Salary">
                 </el-table-column>
                 <el-table-column
                 label="Actions">
@@ -33,7 +27,7 @@
                 <div class="">
                 </div>
                 <div class="card-body">
-                    <l-paginacion class="pagination" module="users" collection="getUsers" estado="usersState"/>
+                    <l-paginacion class="pagination" module="permisos" collection="getPermisos" estado="permisosState"/>
                 </div>
             </div>
             <Load />
@@ -41,34 +35,34 @@
         </div>
     </div>
 </template>
+
 <script>
 import {Table, TableColumn} from 'element-ui'
 import { mapActions, mapState } from 'vuex'
 import {Paginacion as LPaginacion} from 'src/components/index'
 import {Load} from 'src/components/index'
 export default {
-    data() {
+  data() {
       return {
           vacio: "Sin información"
       }
     },
-    components: {
+  components: {
       Load,
       LPaginacion,
       [Table.name]: Table,
       [TableColumn.name]: TableColumn,
     },
-    computed: {
-      ...mapState('users', ['usersState', 'pagination', 'loading']),
+  computed: {
+      ...mapState('permisos', ['permisosState', 'pagination']),
     },
      methods: {
       ...mapActions({
-          getUsers: 'users/getUsers', // Trae todos los usuarios
+          getPermisos: 'permisos/getPermisos', // Trae todos los usuarios
       }),
     },
-
-    mounted () {
-        this.getUsers(this.pagination.current_page);
+  mounted () {
+        this.getPermisos(this.pagination.current_page);
       },
 }
 </script>
