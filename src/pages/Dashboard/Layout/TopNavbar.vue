@@ -44,10 +44,7 @@
               <span class="d-lg-none">Notification</span>
             </template>
             <a class="dropdown-item" href="#">Notification 1</a>
-            <a class="dropdown-item" href="#">Notification 2</a>
-            <a class="dropdown-item" href="#">Notification 3</a>
-            <a class="dropdown-item" href="#">Notification 4</a>
-            <a class="dropdown-item" href="#">Another notification</a>
+
           </drop-down>
           <drop-down position="right">
             <i slot="title" class="nc-icon nc-bullet-list-67"></i>

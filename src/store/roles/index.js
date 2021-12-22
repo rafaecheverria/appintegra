@@ -46,12 +46,12 @@ export default {
   actions: {
     async getRoles({ dispatch, commit, state }, page) {
       let url = '/roles?page='+ page + '&buscar='+ state.buscar
+      let load = {loading: false, fullPage: false}
       await axios.get(url)
         .then((response) => {
-          console.log(response)
           commit('GET_ROLES', response.data.roles)
           commit('GET_PAGINATION', response.data.pagination)
-          dispatch('loading/loading', false, { root: true })
+          dispatch('loading/loading', load, { root: true })
         })
         .catch(function(error){
           commit('SET_CONSTITUENCY', null);

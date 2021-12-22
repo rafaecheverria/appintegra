@@ -1,7 +1,6 @@
 <template>
 
   <div>
-    <fade-render-transition>
     <card>
        <div slot="header">
         <span class="card-title
@@ -17,15 +16,18 @@
 
         <div class="row">
           <div class="col-lg-4">
-            <fg-input label="Nombres">
+            <fg-input label="Rut"
+                      v-model="form.rut">
             </fg-input>
           </div>
           <div class="col-lg-4">
-            <fg-input label="Apellidos">
+            <fg-input label="Nombres"
+                      v-model="form.nombres">
             </fg-input>
           </div>
           <div class="col-lg-4">
-            <fg-input label="Email">
+            <fg-input label="Apellidos"
+                      v-model="form.apellidos">
             </fg-input>
           </div>
         </div>
@@ -34,15 +36,18 @@
 
         <div class="row">
           <div class="col-lg-4">
-            <fg-input label="Fecha de Nacimiento">
+            <fg-input label="Email"
+                      v-model="form.email">
             </fg-input>
           </div>
           <div class="col-lg-4">
-            <fg-input label="Género">
+            <fg-input label="Fecha de Nacimiento"
+                       v-model="form.fecha_nacimiento">
             </fg-input>
           </div>
           <div class="col-lg-4">
-            <fg-input label="Dirección">
+            <fg-input label="Género"
+                       v-model="form.genero">
             </fg-input>
           </div>
         </div>
@@ -50,36 +55,70 @@
         <!-- Fila 3 -->
 
         <div class="row">
-          <div class="col-lg-4">
-            <fg-input label="Telefono">
+          <div class="col-lg-8">
+            <fg-input label="Dirección"
+                      v-model="form.direccion">
             </fg-input>
           </div>
-          <div class="col-lg-4">
+           <div class="col-lg-4">
+             <label>Región</label>
+          <el-select class="select-default"
+                        size="large"
+                        placeholder="Seleccionar Región"
+                        v-model="form.region_id"
+                        v-on:change="selectDepartamentos($event)"
+                        noDataText="Sin Datos"
+                        filterable
+                        noMatchText="No encontrado"
+                        >
+                  <el-option v-for="region in selectRegion"
+                          class="select-primary"
+                          :value="region.id"
+                          :label="region.nombre"
+                          :key="region.id">
+                  </el-option>
+                </el-select>
+          </div>
+        </div>
+
+        <!-- Fila 4 -->
+
+        <div class="row">
+          <div class="col-lg-6">
              <label>Departamento</label>
               <el-select class="select-default"
                       size="large"
                       placeholder="Seleccionar"
-                      v-model="opcion1"
-                      multiple>
-              <el-option class="select-primary"
-                         :value="1"
-                         :key="1"> opcion 2
+                      v-model="form.departamento_id"
+                      noDataText="Sin Datos"
+                      filterable
+                      noMatchText="No encontrado"
+                      >
+              <el-option v-for="departamento in selectDeptoReg"
+                        class="select-primary"
+                        :value="departamento.id"
+                        :label="departamento.departamento"
+                        :key="departamento.id">
               </el-option>
           </el-select>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-6">
              <label>Cargo</label>
               <el-select
                       class="select-default"
                       size="large"
                       placeholder="Seleccionar"
-                      v-model="opcion2"
-                      multiple>
-              <el-option
+                      v-model="form.cargo_id"
+                      noDataText="Sin Datos"
+                      filterable
+                      noMatchText="No encontrado"
+                      >
+              <el-option v-for="cargo in selectCargo"
                       class="select-primary"
-                      :value="2"
-                      :key="2"> opcion 3
-            >
+                      :value="cargo.id"
+                      :label="cargo.nombre"
+                      :key="cargo.id">
+
               </el-option>
               </el-select>
           </div>
@@ -87,43 +126,51 @@
 
       </div>
 
-      <button type="submit" class="btn btn-info btn-fill pull-right" >Grabar Documento</button>
+      <button type="submit" class="btn btn-info btn-fill pull-right" @click="agregarUsuario()" >Guardar Usuario</button>
       <div class="clearfix"></div>
 
       </card>
 
-    </fade-render-transition>
   </div>
 
 </template>
 
 <script>
+import { mapFields } from 'vuex-map-fields'
 import { mapActions, mapState } from 'vuex'
-import { mapFields } from 'vuex-map-fields';
 import { Select, Option} from 'element-ui'
-import {FadeRenderTransition} from '@/components/index'
 
   export default {
-    data () {
-      return {
-      opcion1:'',
-      opcion2:'',
-      }
+    components: {
+      [Select.name]: Select,
+      [Option.name]: Option,
     },
-
     computed: {
-      ...mapFields('users', [ 'form.nombres']),
+      ...mapFields('users', [ 'form']),
+      ...mapState('regiones', ['selectRegion']),
+      ...mapState('departamentos', ['selectDeptoReg']),
+      ...mapState('cargos', ['selectCargo']),
     },
 
-  components: {
-    [Select.name]: Select,
-    [Option.name]: Option,
-    FadeRenderTransition,
+    methods: {
+      ...mapActions({
+          selectRegiones: 'regiones/selectRegion', // Trae todas las regiones
+          selectDepartamentos: 'departamentos/changeRegion',
+          selectCargos: 'cargos/selectCargo',
+          addUser: 'users/addUser',
+      }),
+
+      agregarUsuario() {
+        this.addUser(this.form)
+      },
     },
 
+    mounted () {
+        this.selectRegiones();
+        this.selectCargos();
+      },
   }
 </script>
-
 <style>
 .form-group {
     margin-bottom: 1rem;

@@ -40,6 +40,14 @@ const router = new VueRouter({
 })
 
 // mantiene la session activa al refrescar la página
+//iterar si el token es null
+
+//store.dispatch('auth/mensaje')
+
+//setInterval(function(){
+ // console.log("Hola")
+//},1000);
+
 store.dispatch('auth/attempt', localStorage.getItem('token'))
 
 /* eslint-disable no-new */

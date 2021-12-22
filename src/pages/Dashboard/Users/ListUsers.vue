@@ -42,10 +42,10 @@
     </div>
 </template>
 <script>
-import {Table, TableColumn} from 'element-ui'
+import { Table, TableColumn } from 'element-ui'
 import { mapActions, mapState } from 'vuex'
-import {Paginacion as LPaginacion} from 'src/components/index'
-import {Load} from 'src/components/index'
+import { Paginacion as LPaginacion } from 'src/components/index'
+import { Load } from 'src/components/index'
 export default {
     data() {
       return {
@@ -59,7 +59,7 @@ export default {
       [TableColumn.name]: TableColumn,
     },
     computed: {
-      ...mapState('users', ['usersState', 'pagination', 'loading']),
+      ...mapState('users', ['usersState', 'pagination']),
     },
      methods: {
       ...mapActions({

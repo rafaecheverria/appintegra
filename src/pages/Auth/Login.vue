@@ -51,6 +51,7 @@
             </fade-render-transition>
           </form>
         </ValidationObserver>
+        <Load />
       </div>
     </div>
   </auth-layout>
@@ -61,6 +62,7 @@ import AuthLayout from './AuthLayout.vue'
 import { extend } from "vee-validate";
 import { required, email, min } from "vee-validate/dist/rules";
 import { mapActions } from 'vuex'
+import { Load } from 'src/components/index'
 
 extend("email", email);
 extend("required", required);
@@ -69,7 +71,8 @@ extend("min", min);
   export default {
     components: {
       FadeRenderTransition,
-      AuthLayout
+      AuthLayout,
+      Load,
     },
     computed: {
         bloquear() {
@@ -88,15 +91,22 @@ extend("min", min);
           email: 'rafaecheverria@live.cl',
           password: 'raer2608',
         },
-        subscribe: true
+        subscribe: true,
+        load: {
+          loading: true,
+          fullPage: true
+        }
       };
     },
     methods: {
        ...mapActions({
             login: 'auth/login',
+            loading: 'loading/loading',
         }),
         async procesarFormulario() {
+            this.loading(this.load)
             await this.login(this.form)
+           
             await this.$router.push({ name: 'Home' })
             this.form.email = ''
             this.form.password = ''
@@ -108,6 +118,9 @@ extend("min", min);
         document.body.classList.remove('nav-open')
         document.body.classList.remove('off-canvas-sidebar')
       }
+    },
+    mounted () {
+      this.loading(false, true)
     },
     beforeDestroy () {
       this.closeMenu()

@@ -5,6 +5,10 @@ import users from './users'
 import roles from './roles'
 import permisos from './permisos'
 import loading from './loading'
+import regiones from './regiones'
+import departamentos from './departamentos'
+import cargos from './cargos'
+
 
 Vue.use(Vuex)
 
@@ -14,6 +18,9 @@ export default new Vuex.Store({
     users,
     roles,
     permisos,
-    loading
+    loading,
+    regiones,
+    departamentos,
+    cargos
   },
 })

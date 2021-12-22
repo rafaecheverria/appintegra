@@ -143,7 +143,7 @@ let configMenu = {
   children: [
     {
       path: 'user',
-      name: 'User Page',
+      name: 'Usuarios',
       component: User
     },
     {

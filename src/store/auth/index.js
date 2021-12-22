@@ -28,7 +28,6 @@ export default {
   actions: {
     async login({ dispatch }, credentials) {
       const response = await axios.post('auth/login', credentials)
-      console.log(response)
       return dispatch('attempt', response.data.token)
     },
 
@@ -45,6 +44,7 @@ export default {
         const response = await axios.get('auth/user')
         commit('SET_USER', response.data)
       } catch (e) {
+        console.log("la sesion expiró")
         commit('SET_TOKEN', null)
         commit('SET_USER', null)
       }
@@ -54,7 +54,7 @@ export default {
         commit('SET_TOKEN', null)
         commit('SET_USER', null)
       })
-    },
+    },     
   },
   modules: {},
 }

@@ -26,7 +26,11 @@
 
     data () {
       return {
-        modulo: this.module
+        modulo: this.module,
+        load: {
+            loading: true,
+            fullPage: false
+        }
       }
     },
 
@@ -61,10 +65,9 @@
     },
     methods: {
         cambiarPagina(page){
-            console.log(page)
             this.$store.state[this.module].pagination.current_page = page;
             this.$store.dispatch(this.module+'/'+this.collection, this.$store.state[this.module].pagination.current_page);
-            this.$store.dispatch('loading/loading', true);
+            this.$store.dispatch('loading/loading', this.load);
         },
     },
   }

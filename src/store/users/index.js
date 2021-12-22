@@ -19,6 +19,9 @@ export default {
       fecha_nacimiento: '',
       genero: '',
       direccion: '',
+      departamento_id: '',
+      region_id: '',
+      cargo_id: ''
     }
   },
 
@@ -34,17 +37,20 @@ export default {
     GET_PAGINATION(state, usersAccion) {
       state.pagination = usersAccion
     },
-    SET_CURRENT_PAGE(state, data) {
-      state.pagination.current_page = data;
-    },
     REFRESH_USERS(state, user) {
       state.usersState.push(user)
     },
-    OPEN_DIALOG(state) {
-      state.dialog = true
-    },
-    CLOSE_DIALOG(state) {
-      state.dialog = false
+    CLEAR_FORM(state) {
+      state.form.rut = ''
+      state.form.nombres = ''
+      state.form.apellidos = ''
+      state.form.email = ''
+      state.form.fecha_nacimiento = ''
+      state.form.genero = ''
+      state.form.direccion = ''
+      state.form.departamento_id = ''
+      state.form.region_id = ''
+      state.form.cargo_id = ''
     },
     GET_USER(response) {
       console.log(response)
@@ -55,25 +61,27 @@ export default {
   actions: {
     async getUsers({ dispatch, commit, state }, page) {
       let url = '/users?page='+ page + '&buscar='+ state.buscar
+      let load = { loading: false, fullPage: false }
       await axios.get(url)
         .then((response) => {
           commit('GET_USERS', response.data.users)
           commit('GET_PAGINATION', response.data.pagination)
-          dispatch('loading/loading', false, { root: true })
+          dispatch('loading/loading', load, { root: true })
         })
         .catch(function(error){
           commit('SET_CONSTITUENCY', null);
+          this.$router.push({name: 'login'})
         })
     },
 
-    async loading({ commit }) {
-      commit('LOADING')
-    },
-
     async addUser({ commit }, userData) {
-      const response = await axios.post('/users/add', userData)
-      commit('CLOSE_DIALOG')
+      let url = '/users/add'
+      await axios.post(url, userData)
+      .then((response) => {
       commit('REFRESH_USERS', response.data.user)
+      commit('CLEAR_FORM')
+      this.$router.push({name: 'Usuarios'})
+      })
     },
     // async getUser(id) {
     //   console.log(id)
@@ -94,11 +102,9 @@ export default {
       //     .catch(error => reject(error))
       // })
     },
-    async openDialog({ commit }) {
-      commit('OPEN_DIALOG')
-    },
-    async closeDialog({ commit }) {
-      commit('CLOSE_DIALOG')
+
+    clearForm({ commit }) {
+      commit('CLEAR_FORM')
     },
   },
 }

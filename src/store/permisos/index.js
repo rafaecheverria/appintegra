@@ -45,11 +45,12 @@ export default {
   actions: {
     async getPermisos({ dispatch, commit, state }, page) {
       let url = '/permisos?page='+ page + '&buscar='+ state.buscar
+      let load = {loading: false, fullPage: false}
       await axios.get(url)
         .then((response) => {
           commit('GET_PERMISOS', response.data.permisos)
           commit('GET_PAGINATION', response.data.pagination)
-          dispatch('loading/loading', false, { root: true })
+          dispatch('loading/loading', load, { root: true })
         })
         .catch(function(error){
           commit('SET_CONSTITUENCY', null);

@@ -18,7 +18,6 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import { mapFields } from 'vuex-map-fields';
-//import Agregar from './Agregar.vue'
 export default {
     computed: {
       ...mapState('users', ['dialog']),
@@ -32,6 +31,8 @@ export default {
       ...mapActions({loading: 'loading/loading'}),
 
       async routeAgregar() {
+          let load = {loading: false, fullPage: false}
+          this.loading(load)
           await this.$router.push({ name: 'User Form' })
       },
       search(page) {
