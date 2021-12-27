@@ -63,7 +63,7 @@
 <script>
 import { extend } from "vee-validate";
 import { required, email, confirmed } from "vee-validate/dist/rules";
-  import {Checkbox} from 'src/components/index'
+import {Checkbox} from 'src/components/index'
 
 extend("email", email);
 extend("required", required);

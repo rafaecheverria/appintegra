@@ -11,24 +11,50 @@
                      text-white">REGISTRAR USUARIO</span>
       </div>
       <div class="card-body">
-
+    <ValidationObserver v-slot="{ handleSubmit }">
         <!-- Fila 1 -->
-
+      <form @submit.prevent="handleSubmit(agregarUsuario)">
         <div class="row">
           <div class="col-lg-4">
+            <ValidationProvider
+                    name="rut"
+                    rules="required"
+                    v-slot="{ passed, failed }"
+                  >
             <fg-input label="Rut"
-                      v-model="form.rut">
+                      v-model="form.rut"
+                      data-vv-validate-on="none"
+                      :error="failed ? 'el Rut es un campo requerido': null"
+                      :hasSuccess="passed">
             </fg-input>
+            </ValidationProvider>
           </div>
           <div class="col-lg-4">
+             <ValidationProvider
+                    name="email"
+                    rules="required"
+                    v-slot="{ passed, failed }"
+                  >
             <fg-input label="Nombres"
-                      v-model="form.nombres">
+                      v-model="form.nombres"
+                      data-vv-validate-on="none"
+                      :error="failed ? 'Nombres es un campo requerido': null"
+                      :hasSuccess="passed">
             </fg-input>
+            </ValidationProvider>
           </div>
           <div class="col-lg-4">
+            <ValidationProvider
+                    rules="required"
+                    v-slot="{ passed, failed }"
+                  >
             <fg-input label="Apellidos"
-                      v-model="form.apellidos">
+                      v-model="form.apellidos"
+                      data-vv-validate-on="none"
+                      :error="failed ? 'Apellidos es un campo requerido': null"
+                      :hasSuccess="passed">
             </fg-input>
+            </ValidationProvider>
           </div>
         </div>
 
@@ -36,19 +62,52 @@
 
         <div class="row">
           <div class="col-lg-4">
+            <ValidationProvider
+                    name="email"
+                    rules="required|email"
+                    v-slot="{ passed, failed }"
+                  >
             <fg-input label="Email"
+                      type= "email"
+                      data-vv-validate-on="none"
+                      :error="failed ? 'el Email es un campo requerido': null"
+                      :hasSuccess="passed"
                       v-model="form.email">
             </fg-input>
+            {{failed[0]}}
+            </ValidationProvider>
           </div>
-          <div class="col-lg-4">
-            <fg-input label="Fecha de Nacimiento"
-                       v-model="form.fecha_nacimiento">
+          <div class="col-md-4">
+            <ValidationProvider
+                    name="fecha_nacimiento"
+                    rules="required"
+                    v-slot="{ passed, failed }"
+                  >
+            <fg-input
+                  label="Fecha de Nacimiento"
+                  data-vv-validate-on="none"
+                  :error="failed ? 'Fecha Nacimiento es un campo requerido': null"
+                  :hasSuccess="passed">
+                <el-date-picker v-model="form.fecha_nacimiento"
+                                format="dd-MM-yyyy"
+                                type="date"
+                                placeholder="dd-mm-yyyy"
+                               >
+                </el-date-picker>
             </fg-input>
+            </ValidationProvider>
           </div>
           <div class="col-lg-4">
+            <ValidationProvider
+                    rules="required"
+                    v-slot="{ passed, failed }"
+                  >
             <fg-input label="Género"
-                       v-model="form.genero">
+                      v-model="form.genero"
+                      :error="failed ? 'Género es un campo requerido': null"
+                      :hasSuccess="passed">
             </fg-input>
+            </ValidationProvider>
           </div>
         </div>
 
@@ -56,28 +115,38 @@
 
         <div class="row">
           <div class="col-lg-8">
+             <ValidationProvider
+                    rules="required"
+                    v-slot="{ passed, failed }"
+                  >
             <fg-input label="Dirección"
-                      v-model="form.direccion">
+                      v-model="form.direccion"
+                      data-vv-validate-on="none"
+                      :error="failed ? 'Dirección es un campo requerido': null"
+                      :hasSuccess="passed">
             </fg-input>
+            </ValidationProvider>
           </div>
            <div class="col-lg-4">
              <label>Región</label>
+
           <el-select class="select-default"
-                        size="large"
-                        placeholder="Seleccionar Región"
-                        v-model="form.region_id"
-                        v-on:change="selectDepartamentos($event)"
-                        noDataText="Sin Datos"
-                        filterable
-                        noMatchText="No encontrado"
+                      size="large"
+                      placeholder="Seleccionar Región"
+                      v-model="form.region_id"
+                      v-on:change="selectDepartamentos($event)"
+                      noDataText="Sin Datos"
+                      filterable
+                      noMatchText="No encontrado"
                         >
                   <el-option v-for="region in selectRegion"
-                          class="select-primary"
-                          :value="region.id"
-                          :label="region.nombre"
-                          :key="region.id">
+                        class="select-primary"
+                        :value="region.id"
+                        :label="region.nombre"
+                        :key="region.id">
                   </el-option>
                 </el-select>
+                <span>Error</span>
           </div>
         </div>
 
@@ -123,33 +192,48 @@
               </el-select>
           </div>
         </div>
+          <br>
+          <l-button @click="$router.push('/configuracion/user')" type="default">
+            <span class="btn-label">
+                <i class="fa fa-arrow-left"></i>
+            </span>
+            Volver
+          </l-button>
+          <button type="submit" class="btn btn-success btn-fill pull-right">Guardar Usuario</button>
+          <div class="clearfix"></div>
 
+      </form>
+      </ValidationObserver>
       </div>
-
-      <button type="submit" class="btn btn-info btn-fill pull-right" @click="agregarUsuario()" >Guardar Usuario</button>
-      <div class="clearfix"></div>
-
-      </card>
-
+     </card>
   </div>
-
 </template>
 
 <script>
 import { mapFields } from 'vuex-map-fields'
 import { mapActions, mapState } from 'vuex'
-import { Select, Option} from 'element-ui'
+import { Select, Option, DatePicker} from 'element-ui'
+import { extend} from "vee-validate";
+import { required, email } from "vee-validate/dist/rules";
+import Swal from 'sweetalert2'
+import { rutValidator } from "vue-dni"
+
+extend("email", email);
+extend("required", required);
+extend("rut", rutValidator);
 
   export default {
     components: {
       [Select.name]: Select,
       [Option.name]: Option,
+      [DatePicker.name]: DatePicker,
     },
     computed: {
       ...mapFields('users', [ 'form']),
       ...mapState('regiones', ['selectRegion']),
       ...mapState('departamentos', ['selectDeptoReg']),
       ...mapState('cargos', ['selectCargo']),
+      ...mapState('alerta', ['up', 'down']),
     },
 
     methods: {
@@ -161,7 +245,18 @@ import { Select, Option} from 'element-ui'
       }),
 
       agregarUsuario() {
-        this.addUser(this.form)
+        console.log("hol")
+          Swal.fire(this.up).then((result) => {
+              if (result.isConfirmed) {
+                Swal.fire(
+                  this.down.guardado,
+                  this.down.descripcion,
+                  this.down.tipo
+                )
+                this.addUser(this.form)
+              }
+            })
+
       },
     },
 

@@ -9,6 +9,7 @@ export default {
     offset: 4,
     dialog: false,
     loading: true,
+    load: { loading: false, fullPage: false },
     buscar: '',
     title: 'Usuarios',
     category: 'Información exclusiva del administrador del sistema',
@@ -61,12 +62,11 @@ export default {
   actions: {
     async getUsers({ dispatch, commit, state }, page) {
       let url = '/users?page='+ page + '&buscar='+ state.buscar
-      let load = { loading: false, fullPage: false }
       await axios.get(url)
         .then((response) => {
           commit('GET_USERS', response.data.users)
           commit('GET_PAGINATION', response.data.pagination)
-          dispatch('loading/loading', load, { root: true })
+          dispatch('loading/loading', state.load, { root: true })
         })
         .catch(function(error){
           commit('SET_CONSTITUENCY', null);
@@ -74,13 +74,20 @@ export default {
         })
     },
 
-    async addUser({ commit }, userData) {
+    async addUser({ commit, dispatch, state}, userData) {
       let url = '/users/add'
       await axios.post(url, userData)
       .then((response) => {
-      commit('REFRESH_USERS', response.data.user)
+        console.log(response)
+      //commit('REFRESH_USERS', response.data.user)
       commit('CLEAR_FORM')
-      this.$router.push({name: 'Usuarios'})
+      dispatch('loading/loading', state.load, { root: true })
+      //this.$router.push({name: 'Usuarios'})
+      }).catch(error => {
+        if(error.response.status == 422){
+          console.log(error)
+        //this.errores = error.response.data.errors;
+        }
       })
     },
     // async getUser(id) {
@@ -102,6 +109,8 @@ export default {
       //     .catch(error => reject(error))
       // })
     },
+
+
 
     clearForm({ commit }) {
       commit('CLEAR_FORM')

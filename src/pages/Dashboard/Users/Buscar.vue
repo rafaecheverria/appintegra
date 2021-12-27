@@ -19,8 +19,16 @@
 import { mapActions, mapState } from 'vuex'
 import { mapFields } from 'vuex-map-fields';
 export default {
+    data (){
+      return {
+        cargando: {
+          loading: true,
+          fullPage: false,
+        }
+      }
+    },
     computed: {
-      ...mapState('users', ['dialog']),
+      ...mapState('users', ['load']),
       ...mapFields('users', [ 'buscar']),
     },
      methods: {
@@ -31,12 +39,11 @@ export default {
       ...mapActions({loading: 'loading/loading'}),
 
       async routeAgregar() {
-          let load = {loading: false, fullPage: false}
-          this.loading(load)
+          this.loading(this.load)
           await this.$router.push({ name: 'User Form' })
       },
       search(page) {
-        this.loading(true)
+        this.loading(this.cargando)
         this.getUsers(page)
       }
     },
