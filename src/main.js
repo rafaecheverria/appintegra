@@ -18,9 +18,13 @@ import VueRouter from 'vue-router'
 import LightBootstrap from './light-bootstrap-main'
 import axios from 'axios'
 import store from './store'
+import { extend } from "vee-validate";
+import { required, email } from "vee-validate/dist/rules";
+
+extend("email", email);
+extend("required", required);
 // Plugins
 import App from './App.vue'
-
 // Archivo que gestiona la vida util del token de sesión
 require('@/store/subscriber')
 // Define la url base del proyecto a nivel global

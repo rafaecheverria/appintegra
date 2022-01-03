@@ -1,6 +1,7 @@
 import './polyfills'
 // A plugin file where you could register global components used across the app
 import GlobalComponents from './globalComponents'
+
 // A plugin file where you could register global directives
 import GlobalDirectives from './globalDirectives'
 // Sidebar on the right. Used as a local plugin in DashboardLayout.vue

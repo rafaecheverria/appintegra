@@ -11,7 +11,7 @@
                      text-white">REGISTRAR USUARIO</span>
       </div>
       <div class="card-body">
-    <ValidationObserver v-slot="{ handleSubmit }">
+    <ValidationObserver ref="form" v-slot="{ handleSubmit }">
         <!-- Fila 1 -->
       <form @submit.prevent="handleSubmit(agregarUsuario)">
         <div class="row">
@@ -25,13 +25,14 @@
                       v-model="form.rut"
                       data-vv-validate-on="none"
                       :error="failed ? 'el Rut es un campo requerido': null"
-                      :hasSuccess="passed">
+                      :hasSuccess="passed"
+                      nane="rut">
             </fg-input>
             </ValidationProvider>
           </div>
           <div class="col-lg-4">
              <ValidationProvider
-                    name="email"
+                    name="nombres"
                     rules="required"
                     v-slot="{ passed, failed }"
                   >
@@ -45,6 +46,7 @@
           </div>
           <div class="col-lg-4">
             <ValidationProvider
+                    name="apellidos"
                     rules="required"
                     v-slot="{ passed, failed }"
                   >
@@ -70,7 +72,7 @@
             <fg-input label="Email"
                       type= "email"
                       data-vv-validate-on="none"
-                      :error="failed ? 'el Email es un campo requerido': null"
+                      :error="failed ? 'Email es un campo requerido': null"
                       :hasSuccess="passed"
                       v-model="form.email">
             </fg-input>
@@ -129,7 +131,10 @@
           </div>
            <div class="col-lg-4">
              <label>Región</label>
-
+          <ValidationProvider
+                    rules="required"
+                    v-slot="{ passed, failed }"
+                  >
           <el-select class="select-default"
                       size="large"
                       placeholder="Seleccionar Región"
@@ -141,12 +146,15 @@
                         >
                   <el-option v-for="region in selectRegion"
                         class="select-primary"
+                        data-vv-validate-on="none"
+                        :error="failed ? 'Región es un campo requerido': null"
+                        :hasSuccess="passed"
                         :value="region.id"
                         :label="region.nombre"
                         :key="region.id">
                   </el-option>
                 </el-select>
-                <span>Error</span>
+                 </ValidationProvider>
           </div>
         </div>
 
@@ -201,7 +209,6 @@
           </l-button>
           <button type="submit" class="btn btn-success btn-fill pull-right">Guardar Usuario</button>
           <div class="clearfix"></div>
-
       </form>
       </ValidationObserver>
       </div>
@@ -213,15 +220,8 @@
 import { mapFields } from 'vuex-map-fields'
 import { mapActions, mapState } from 'vuex'
 import { Select, Option, DatePicker} from 'element-ui'
-import { extend} from "vee-validate";
-import { required, email } from "vee-validate/dist/rules";
+
 import Swal from 'sweetalert2'
-import { rutValidator } from "vue-dni"
-
-extend("email", email);
-extend("required", required);
-extend("rut", rutValidator);
-
   export default {
     components: {
       [Select.name]: Select,
@@ -245,18 +245,17 @@ extend("rut", rutValidator);
       }),
 
       agregarUsuario() {
-        console.log("hol")
-          Swal.fire(this.up).then((result) => {
-              if (result.isConfirmed) {
-                Swal.fire(
-                  this.down.guardado,
-                  this.down.descripcion,
-                  this.down.tipo
-                )
-                this.addUser(this.form)
-              }
-            })
-
+        Swal.fire(this.up).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                this.down.guardado,
+                this.down.descripcion,
+                this.down.tipo
+              )
+              this.addUser(this.form)
+              this.$refs.form.reset()
+            }
+        })
       },
     },
 
