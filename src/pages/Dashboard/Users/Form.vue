@@ -154,6 +154,7 @@
                         :key="region.id">
                   </el-option>
                 </el-select>
+                <div class="text-danger invalid-feedback" style="display: block;"> {{ failed ? 'Región es un campo requerido': null }} </div>
                  </ValidationProvider>
           </div>
         </div>
@@ -163,6 +164,10 @@
         <div class="row">
           <div class="col-lg-6">
              <label>Departamento</label>
+             <ValidationProvider
+                    rules="required"
+                    v-slot="{ failed }"
+                  >
               <el-select class="select-default"
                       size="large"
                       placeholder="Seleccionar"
@@ -178,9 +183,15 @@
                         :key="departamento.id">
               </el-option>
           </el-select>
+          <div class="text-danger invalid-feedback" style="display: block;"> {{ failed ? 'Departamento es un campo requerido': null }} </div>
+          </ValidationProvider>
           </div>
           <div class="col-lg-6">
-             <label>Cargo</label>
+            <label>Cargo</label>
+             <ValidationProvider
+                    rules="required"
+                    v-slot="{ failed }"
+                  >
               <el-select
                       class="select-default"
                       size="large"
@@ -195,9 +206,10 @@
                       :value="cargo.id"
                       :label="cargo.nombre"
                       :key="cargo.id">
-
               </el-option>
               </el-select>
+              <div class="text-danger invalid-feedback" style="display: block;"> {{ failed ? 'Cargo es un campo requerido': null }} </div>
+          </ValidationProvider>
           </div>
         </div>
           <br>
@@ -220,8 +232,8 @@
 import { mapFields } from 'vuex-map-fields'
 import { mapActions, mapState } from 'vuex'
 import { Select, Option, DatePicker} from 'element-ui'
-
 import Swal from 'sweetalert2'
+
   export default {
     components: {
       [Select.name]: Select,
@@ -245,17 +257,8 @@ import Swal from 'sweetalert2'
       }),
 
       agregarUsuario() {
-        Swal.fire(this.up).then((result) => {
-            if (result.isConfirmed) {
-              Swal.fire(
-                this.down.guardado,
-                this.down.descripcion,
-                this.down.tipo
-              )
-              this.addUser(this.form)
-              this.$refs.form.reset()
-            }
-        })
+        this.addUser(this.form)
+        this.$refs.form.reset()
       },
     },
 

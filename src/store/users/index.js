@@ -1,11 +1,13 @@
 import axios from 'axios'
 import { getField, updateField } from 'vuex-map-fields';
+import Swal from 'sweetalert2'
 
 export default {
   namespaced: true,
   state: {
     usersState: {},
     pagination: {},
+    errores: {},
     offset: 4,
     dialog: false,
     loading: true,
@@ -35,12 +37,15 @@ export default {
     GET_USERS(state, usersAccion) {
       state.usersState = usersAccion
     },
+
     GET_PAGINATION(state, usersAccion) {
       state.pagination = usersAccion
     },
+
     REFRESH_USERS(state, user) {
       state.usersState.push(user)
     },
+
     CLEAR_FORM(state) {
       state.form.rut = ''
       state.form.nombres = ''
@@ -53,10 +58,12 @@ export default {
       state.form.region_id = ''
       state.form.cargo_id = ''
     },
+
     GET_USER(response) {
       console.log(response)
      // state.usersState = usersAccion
     },
+
   },
 
   actions: {
@@ -76,18 +83,26 @@ export default {
 
     async addUser({ commit, dispatch, state}, userData) {
       let url = '/users/add'
+      let up = this.$store.alerta.state.up
+      let down = this.$store.alerta.state.down
       await axios.post(url, userData)
       .then((response) => {
-        console.log(response)
-      //commit('REFRESH_USERS', response.data.user)
-      commit('CLEAR_FORM')
-      dispatch('loading/loading', state.load, { root: true })
-      //this.$router.push({name: 'Usuarios'})
-      }).catch(error => {
-        if(error.response.status == 422){
-          console.log(error)
-        //this.errores = error.response.data.errors;
-        }
+        Swal.fire(up).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                down.guardado,
+                down.descripcion,
+                down.tipo
+              )
+              commit('CLEAR_FORM')
+              dispatch('loading/loading', state.load, { root: true })
+            }
+        })
+        }).catch(error => {
+          if(error.response.status == 422){
+              console.log(error.response.data.errors.rut)
+              //this.errores = error.response.data.errors;
+          }
       })
     },
     // async getUser(id) {
@@ -109,8 +124,6 @@ export default {
       //     .catch(error => reject(error))
       // })
     },
-
-
 
     clearForm({ commit }) {
       commit('CLEAR_FORM')

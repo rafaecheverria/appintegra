@@ -18,6 +18,11 @@ export default {
 
   },
 
+  getters: {
+    up: state => state.up,
+    down: state => state.down,
+  },
+
   mutations: {
     ALERTA(state, parametro) {
       state.loading = parametro.loading;
