@@ -169,15 +169,16 @@
                     v-slot="{ failed }"
                   >
               <el-select class="select-default"
-                      size="large"
-                      placeholder="Seleccionar"
-                      v-model="form.departamento_id"
-                      noDataText="Sin Datos"
-                      filterable
-                      noMatchText="No encontrado"
-                      >
+                          size="large"
+                          placeholder="Seleccionar"
+                          v-model="form.departamento_id"
+                          noDataText="Sin Datos"
+                          filterable
+                          noMatchText="No encontrado"
+                          >
               <el-option v-for="departamento in selectDeptoReg"
                         class="select-primary"
+                        :error="failed ? 'Departamento es un campo requerido': null"
                         :value="departamento.id"
                         :label="departamento.departamento"
                         :key="departamento.id">

@@ -19,19 +19,14 @@ export default {
   },
 
   getters: {
-    up: state => state.up,
-    down: state => state.down,
-  },
-
-  mutations: {
-    ALERTA(state, parametro) {
-      state.loading = parametro.loading;
-      state.fullPage = parametro.fullPage;
+    getAlerta(state) {
+      return state.up && state.down
     },
   },
+
   actions: {
-    async loading({ commit }, parametro) {
-      commit('LOADING', parametro)
+    async alerta({ getters }) {
+      return getters.getAlerta
     },
   },
 }

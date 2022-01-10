@@ -81,10 +81,10 @@ export default {
         })
     },
 
-    async addUser({ commit, dispatch, state}, userData) {
+    async addUser({ commit, dispatch, state, rootState}, userData) {
+      let up = rootState.alerta.up
+      let down = rootState.alerta.down
       let url = '/users/add'
-      let up = this.$store.alerta.state.up
-      let down = this.$store.alerta.state.down
       await axios.post(url, userData)
       .then((response) => {
         Swal.fire(up).then((result) => {
@@ -100,8 +100,17 @@ export default {
         })
         }).catch(error => {
           if(error.response.status == 422){
-              console.log(error.response.data.errors.rut)
-              //this.errores = error.response.data.errors;
+            let data = error.response.data.errors
+            Object.keys(data).forEach(
+              key=>{
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: data[key][0],
+                })
+              // console.log(data[key][0])
+              }
+            )
           }
       })
     },
