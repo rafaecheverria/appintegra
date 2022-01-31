@@ -233,7 +233,6 @@
 import { mapFields } from 'vuex-map-fields'
 import { mapActions, mapState } from 'vuex'
 import { Select, Option, DatePicker} from 'element-ui'
-import Swal from 'sweetalert2'
 
   export default {
     components: {

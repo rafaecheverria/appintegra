@@ -59,9 +59,9 @@ export default {
       state.form.cargo_id = ''
     },
 
-    GET_USER(response) {
-      console.log(response)
-     // state.usersState = usersAccion
+    GET_USER(state, data) {
+      //state.form.push(data)
+      state.form = data
     },
 
   },
@@ -85,53 +85,58 @@ export default {
       let up = rootState.alerta.up
       let down = rootState.alerta.down
       let url = '/users/add'
-      await axios.post(url, userData)
-      .then((response) => {
-        Swal.fire(up).then((result) => {
-            if (result.isConfirmed) {
-              Swal.fire(
-                down.guardado,
-                down.descripcion,
-                down.tipo
-              )
-              commit('CLEAR_FORM')
-              dispatch('loading/loading', state.load, { root: true })
-            }
-        })
-        }).catch(error => {
-          if(error.response.status == 422){
-            let data = error.response.data.errors
-            Object.keys(data).forEach(
-              key=>{
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Error',
-                  text: data[key][0],
-                })
-              // console.log(data[key][0])
+      await Swal.fire(up).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            down.guardado,
+            down.descripcion,
+            down.tipo
+          )
+          axios.post(url, userData)
+          .then((response) => {
+            console.log(response)
+            }).catch(error => {
+              if(error.response.status == 422){
+                let data = error.response.data.errors
+                Object.keys(data).forEach(
+                  key=>{
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: data[key][0],
+                    })
+                  // console.log(data[key][0])
+                  }
+                )
               }
-            )
-          }
-      })
+          })
+          commit('CLEAR_FORM')
+          dispatch('loading/loading', state.load, { root: true })
+        }
+    })
+      
     },
-    // async getUser(id) {
-    //   console.log(id)
-    //   const response = await axios.get(`/user/${id}`)
-    //   console.log(response.data)
-    // commit('GET_USER', response.data)
-    // const response = await axios.get('/user/', { id: id })
-    // console.log(response)
-    // commit('CLOSE_DIALOG')
-    // commit('REFRESH_USERS', response.data.user)
-    // },
-    getUser(ctx, { id }) {
-      console.log(id)
-      // return new Promise((resolve, reject) => {
-      //   axios
-      //     .get(`/user/${id}`)
-      //     .then(response => resolve(console.log(response)))
-      //     .catch(error => reject(error))
-      // })
+
+    async getUser({ commit }, id ) {
+      let url = `/user/${id}`
+      await axios.get(url)
+          .then((response) => {
+            console.log(response.data.user)
+            commit('GET_USER', response.data.user)
+            }).catch(error => {
+              if(error.response.status == 422){
+                let data = error.response.data.errors
+                Object.keys(data).forEach(
+                  key=>{
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: data[key][0],
+                    })
+                  }
+                )
+              }
+          })
     },
 
     clearForm({ commit }) {
