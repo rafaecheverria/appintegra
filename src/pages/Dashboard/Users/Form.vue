@@ -144,6 +144,7 @@
                       filterable
                       noMatchText="No encontrado"
                         >
+                
                   <el-option v-for="region in selectRegion"
                         class="select-primary"
                         data-vv-validate-on="none"
@@ -176,6 +177,12 @@
                           filterable
                           noMatchText="No encontrado"
                           >
+              <el-option
+                      class="select-primary"
+                      :value="0"
+                      label="Seleccionar"
+                      >
+              </el-option>
               <el-option v-for="departamento in selectDeptoReg"
                         class="select-primary"
                         :error="failed ? 'Departamento es un campo requerido': null"
@@ -202,6 +209,12 @@
                       filterable
                       noMatchText="No encontrado"
                       >
+              <el-option
+                      class="select-primary"
+                      :value="0"
+                      label="Seleccionar"
+                      >
+              </el-option>
               <el-option v-for="cargo in selectCargo"
                       class="select-primary"
                       :value="cargo.id"
@@ -214,7 +227,7 @@
           </div>
         </div>
           <br>
-          <l-button @click="$router.push('/configuracion/user')" type="default">
+          <l-button @click="volver()" type="default">
             <span class="btn-label">
                 <i class="fa fa-arrow-left"></i>
             </span>
@@ -254,17 +267,23 @@ import { Select, Option, DatePicker} from 'element-ui'
           selectDepartamentos: 'departamentos/changeRegion',
           selectCargos: 'cargos/selectCargo',
           addUser: 'users/addUser',
+          limpiarFormulario: 'users/clearForm'
       }),
 
       agregarUsuario() {
+        this.limpiarFormulario()
         this.addUser(this.form)
-        this.$refs.form.reset()
       },
+
+      volver(){
+        this.limpiarFormulario()
+        this.$router.push('/configuracion/user')
+      }
     },
 
     mounted () {
-        this.selectRegiones();
-        this.selectCargos();
+        this.selectRegiones()
+        this.selectCargos()
       },
   }
 </script>

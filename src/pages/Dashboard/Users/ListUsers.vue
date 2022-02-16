@@ -71,6 +71,7 @@ export default {
 
       obtenerUser(id)
       {
+        this.$router.push('/configuracion/user/form')
          this.getUser(id)
       }
     },

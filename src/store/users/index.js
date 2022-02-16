@@ -23,6 +23,7 @@ export default {
       genero: '',
       direccion: '',
       departamento_id: '',
+      departamentos: {},
       region_id: '',
       cargo_id: ''
     }
@@ -61,9 +62,17 @@ export default {
 
     GET_USER(state, data) {
       //state.form.push(data)
-      state.form = data
+      state.form.rut = data.user.rut
+      state.form.nombres = data.user.nombres
+      state.form.apellidos = data.user.apellidos
+      state.form.email = data.user.email
+      state.form.fecha_nacimiento = data.user.fecha_nacimiento
+      state.form.genero = data.user.genero
+      state.form.direccion = data.user.direccion
+      state.form.region_id = data.user.region_id
+      state.form.cargo_id = data.user.cargo_id
+      state.form.departamento_id = data.user.departamento_id
     },
-
   },
 
   actions: {
@@ -117,12 +126,13 @@ export default {
       
     },
 
-    async getUser({ commit }, id ) {
+    async getUser({ commit, rootState }, id ) {
       let url = `/user/${id}`
       await axios.get(url)
           .then((response) => {
-            console.log(response.data.user)
-            commit('GET_USER', response.data.user)
+            console.log(response.data)
+            rootState.departamentos.selectDeptoReg = response.data.departamentos
+            commit('GET_USER', response.data)
             }).catch(error => {
               if(error.response.status == 422){
                 let data = error.response.data.errors

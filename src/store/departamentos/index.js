@@ -45,18 +45,21 @@ export default {
   },
 
   actions: {
-    //SE EJECUTA CUANDO EL SELECT REGIÓN REALIZA UN CAMBIO
+      //SE EJECUTA CUANDO EL SELECT REGIÓN REALIZA UN CAMBIO
       //AQUÍ SE CARGAN LOS DEPARTAMENTOS PERTENECIENTES A LA REGIÓN SELECCIONADA ANTERIORMENTE
       changeRegion({commit}, id){
+        commit('GET_SELECT', {});
         let url = 'departamentos/selectDepartamentoReg/'+id;
         axios.get(url).then(function (response) {
-        var respuesta = response.data;
-        commit('GET_SELECT', response.data.departamentos);
-        //Obtiene las comunas de la regiona seleccionada
+        let respuesta = response.data;
+        if (respuesta ){
+          commit('GET_SELECT', respuesta.departamentos);
+        }
+        //Obtiene los departamentos de la region seleccionada
         }).catch(function (error) {
         console.log(error);
         })
-  },
+      },
   },
 }
 
