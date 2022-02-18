@@ -144,7 +144,6 @@
                       filterable
                       noMatchText="No encontrado"
                         >
-                
                   <el-option v-for="region in selectRegion"
                         class="select-primary"
                         data-vv-validate-on="none"
@@ -179,7 +178,7 @@
                           >
               <el-option
                       class="select-primary"
-                      :value="0"
+                      value=""
                       label="Seleccionar"
                       >
               </el-option>
@@ -211,7 +210,7 @@
                       >
               <el-option
                       class="select-primary"
-                      :value="0"
+                      value=""
                       label="Seleccionar"
                       >
               </el-option>
@@ -233,11 +232,14 @@
             </span>
             Volver
           </l-button>
-          <button type="submit" class="btn btn-success btn-fill pull-right">Guardar Usuario</button>
+             <button  v-if="tipoAccion == 1" type="submit" class="btn btn-success btn-fill pull-right">Guardar Usuario</button>
+             <button  v-else type="submit" class="btn btn-info btn-fill pull-right">Actualizar Usuario</button>
+         
           <div class="clearfix"></div>
       </form>
       </ValidationObserver>
       </div>
+      <Load />
      </card>
   </div>
 </template>
@@ -246,15 +248,18 @@
 import { mapFields } from 'vuex-map-fields'
 import { mapActions, mapState } from 'vuex'
 import { Select, Option, DatePicker} from 'element-ui'
+import { Load } from 'src/components/index'
 
   export default {
     components: {
+      Load,
       [Select.name]: Select,
       [Option.name]: Option,
       [DatePicker.name]: DatePicker,
     },
     computed: {
       ...mapFields('users', [ 'form']),
+      ...mapState('users', ['tipoAccion']),
       ...mapState('regiones', ['selectRegion']),
       ...mapState('departamentos', ['selectDeptoReg']),
       ...mapState('cargos', ['selectCargo']),
@@ -266,13 +271,18 @@ import { Select, Option, DatePicker} from 'element-ui'
           selectRegiones: 'regiones/selectRegion', // Trae todas las regiones
           selectDepartamentos: 'departamentos/changeRegion',
           selectCargos: 'cargos/selectCargo',
-          addUser: 'users/addUser',
-          limpiarFormulario: 'users/clearForm'
-      }),
+          insertaUsuario: 'users/insertaUsuario',
+          limpiarFormulario: 'users/clearForm',
+          loading: 'loading/loading'
+        }),
 
-      agregarUsuario() {
-        this.limpiarFormulario()
-        this.addUser(this.form)
+     async agregarUsuario() {
+        const isValid = await this.$refs.form.validate();
+          if (!isValid) {
+            return
+          }
+        this.$refs.form.reset(); //resetea los errores vee-validate
+        this.insertaUsuario(this.form)
       },
 
       volver(){
@@ -282,8 +292,9 @@ import { Select, Option, DatePicker} from 'element-ui'
     },
 
     mounted () {
-        this.selectRegiones()
-        this.selectCargos()
+      this.loading(false)
+      this.selectRegiones()
+      this.selectCargos()
       },
   }
 </script>

@@ -7,7 +7,7 @@ export default {
   state: {
     usersState: {},
     pagination: {},
-    errores: {},
+    tipoAccion: 0,
     offset: 4,
     dialog: false,
     loading: true,
@@ -39,6 +39,10 @@ export default {
       state.usersState = usersAccion
     },
 
+    CAMBIAR_ACCION(state, accion) {
+      state.tipoAccion = accion
+    },
+
     GET_PAGINATION(state, usersAccion) {
       state.pagination = usersAccion
     },
@@ -61,7 +65,6 @@ export default {
     },
 
     GET_USER(state, data) {
-      //state.form.push(data)
       state.form.rut = data.user.rut
       state.form.nombres = data.user.nombres
       state.form.apellidos = data.user.apellidos
@@ -90,19 +93,22 @@ export default {
         })
     },
 
-    async addUser({ commit, dispatch, state, rootState}, userData) {
+    async insertaUsuario({ commit, dispatch, state, rootState}, userData) {
       let up = rootState.alerta.up
       let down = rootState.alerta.down
       let url = '/users/add'
       await Swal.fire(up).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire(
-            down.guardado,
-            down.descripcion,
-            down.tipo
-          )
           axios.post(url, userData)
           .then((response) => {
+            dispatch('loading/loading', state.load, { root: true })
+            Swal.fire(
+              down.guardado,
+              down.descripcion,
+              down.tipo
+            )
+            commit('CLEAR_FORM')
+            rootState.departamentos.selectDeptoReg = {}
             console.log(response)
             }).catch(error => {
               if(error.response.status == 422){
@@ -119,8 +125,7 @@ export default {
                 )
               }
           })
-          commit('CLEAR_FORM')
-          dispatch('loading/loading', state.load, { root: true })
+          
         }
     })
       
@@ -130,7 +135,6 @@ export default {
       let url = `/user/${id}`
       await axios.get(url)
           .then((response) => {
-            console.log(response.data)
             rootState.departamentos.selectDeptoReg = response.data.departamentos
             commit('GET_USER', response.data)
             }).catch(error => {
@@ -147,10 +151,28 @@ export default {
                 )
               }
           })
+          rootState.loading.loading = false
     },
 
-    clearForm({ commit }) {
+    clearForm({ commit, rootState }) {
+      rootState.departamentos.selectDeptoReg = {}
       commit('CLEAR_FORM')
     },
+
+    cambiarAccion({ commit }, accion) {
+      commit('CAMBIAR_ACCION', accion)
+    },
+
+    alerta({rootState}){
+      let up = rootState.alerta.up
+      let down = rootState.alerta.down
+      Swal.fire(
+        down.guardado,
+        down.descripcion,
+        down.tipo
+      )
+    }
+
+    
   },
 }

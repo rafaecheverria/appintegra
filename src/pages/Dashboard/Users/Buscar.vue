@@ -34,12 +34,16 @@ export default {
      methods: {
       ...mapActions({
           getUsers:   'users/getUsers', // Trae todos los usuarios
+          tipoAccion:   'users/cambiarAccion',
           openDialog: 'users/openDialog',
+          limpiarFormulario: 'users/clearForm'
       }),
       ...mapActions({loading: 'loading/loading'}),
 
       async routeAgregar() {
+          this.tipoAccion(1)
           this.loading(this.load)
+          this.limpiarFormulario()
           await this.$router.push({ name: 'User Form' })
       },
       search(page) {

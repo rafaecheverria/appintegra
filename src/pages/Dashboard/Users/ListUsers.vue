@@ -66,13 +66,14 @@ export default {
      methods: {
       ...mapActions({
           getUsers: 'users/getUsers', // Trae todos los usuarios
-          getUser: 'users/getUser' //Trae 1 usuario para editar
+          getUser: 'users/getUser', //Trae 1 usuario para editar
+          cambiarAccion: 'users/cambiarAccion', // Cambia la accion del boton agregar o actualizar en el form usuario
       }),
 
-      obtenerUser(id)
-      {
+       obtenerUser(id){
+        this.cambiarAccion(2) //activa el boton actualizar usuario
+        this.getUser(id)
         this.$router.push('/configuracion/user/form')
-         this.getUser(id)
       }
     },
 

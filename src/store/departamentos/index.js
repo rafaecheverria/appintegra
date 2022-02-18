@@ -47,14 +47,12 @@ export default {
   actions: {
       //SE EJECUTA CUANDO EL SELECT REGIÓN REALIZA UN CAMBIO
       //AQUÍ SE CARGAN LOS DEPARTAMENTOS PERTENECIENTES A LA REGIÓN SELECCIONADA ANTERIORMENTE
-      changeRegion({commit}, id){
-        commit('GET_SELECT', {});
+      changeRegion({commit, rootState}, id){
+        rootState.users.form.departamento_id = '' //resetar valor del select departamento en el formulario guardar usuario
         let url = 'departamentos/selectDepartamentoReg/'+id;
         axios.get(url).then(function (response) {
         let respuesta = response.data;
-        if (respuesta ){
-          commit('GET_SELECT', respuesta.departamentos);
-        }
+        commit('GET_SELECT', respuesta.departamentos);
         //Obtiene los departamentos de la region seleccionada
         }).catch(function (error) {
         console.log(error);
