@@ -10,8 +10,13 @@ import Stats from 'src/pages/Dashboard/Dashboard/Stats.vue'
 
 // Pages
 import User from 'src/pages/Dashboard/Users'
-import Form from 'src/pages/Dashboard/Users/Form'
+import FormUser from 'src/pages/Dashboard/Users/Form'
 import Login from 'src/pages/Auth/Login.vue'
+
+//Role
+import FormRole from 'src/pages/Dashboard/Roles/Form'
+
+import FormPermiso from 'src/pages/Dashboard/Permisos/Form'
 
 // Nuevos componentes
 const Users = () => import('src/pages/Dashboard/Users')
@@ -149,7 +154,7 @@ let configMenu = {
     {
       path: 'user/form',
       name: 'User Form',
-      component: Form
+      component: FormUser
     },
     {
       path: 'roles',
@@ -157,9 +162,19 @@ let configMenu = {
       component: Role
     },
     {
+      path: 'role/form',
+      name: 'Role Form',
+      component: FormRole
+    },
+    {
       path: 'permisos',
       name: 'Permisos',
       component: Permissions
+    },
+    {
+      path: 'permisos/form',
+      name: 'Permisos Form',
+      component: FormPermiso
     },
   ]
 }

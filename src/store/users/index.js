@@ -25,7 +25,8 @@ export default {
       departamento_id: '',
       departamentos: {},
       region_id: '',
-      cargo_id: ''
+      cargo_id: '',
+      id: 0,
     }
   },
 
@@ -75,11 +76,12 @@ export default {
       state.form.region_id = data.user.region_id
       state.form.cargo_id = data.user.cargo_id
       state.form.departamento_id = data.user.departamento_id
+      state.form.id = data.user.id
     },
   },
 
   actions: {
-    async getUsers({ dispatch, commit, state }, page) {
+    async getUsers({ dispatch, commit, state }, page) { // Obtiene todos los usuarios y los carga a la tabla
       let url = '/users?page='+ page + '&buscar='+ state.buscar
       await axios.get(url)
         .then((response) => {
@@ -90,48 +92,11 @@ export default {
         .catch(function(error){
           commit('SET_CONSTITUENCY', null);
           this.$router.push({name: 'login'})
+          console.log("se cerro la sesion")
         })
     },
 
-    async insertaUsuario({ commit, dispatch, state, rootState}, userData) {
-      let up = rootState.alerta.up
-      let down = rootState.alerta.down
-      let url = '/users/add'
-      await Swal.fire(up).then((result) => {
-        if (result.isConfirmed) {
-          axios.post(url, userData)
-          .then((response) => {
-            dispatch('loading/loading', state.load, { root: true })
-            Swal.fire(
-              down.guardado,
-              down.descripcion,
-              down.tipo
-            )
-            commit('CLEAR_FORM')
-            rootState.departamentos.selectDeptoReg = {}
-            console.log(response)
-            }).catch(error => {
-              if(error.response.status == 422){
-                let data = error.response.data.errors
-                Object.keys(data).forEach(
-                  key=>{
-                    Swal.fire({
-                      icon: 'error',
-                      title: 'Error',
-                      text: data[key][0],
-                    })
-                  // console.log(data[key][0])
-                  }
-                )
-              }
-          })
-          
-        }
-    })
-      
-    },
-
-    async getUser({ commit, rootState }, id ) {
+    async getUser({ commit, rootState }, id ) { //Obtienen un usuario y carga los datos al formulario
       let url = `/user/${id}`
       await axios.get(url)
           .then((response) => {
@@ -154,6 +119,60 @@ export default {
           rootState.loading.loading = false
     },
 
+    async insertaUsuario({commit, dispatch, rootState, state},userData){ //Inserta o actualiza usuario dependiendo de la acciòn que el usuario elija.
+      let url = ''
+      let enviar = ''
+      if(userData.accion != 1){
+        url = `/user/update/${userData.form.id}`
+         enviar = await axios.put
+      } else {
+        url = '/users/add'
+        enviar = await axios.post
+      }
+        enviar(url, userData.form)
+          .then((response) => {
+            dispatch('loading/loading', state.load, { root: true })
+            dispatch('alerta')
+            commit('CLEAR_FORM')
+            rootState.departamentos.selectDeptoReg = {}
+            }).catch(error => {
+              if(error.response.status == 422){
+                let data = error.response.data.errors
+                Object.keys(data).forEach(
+                  key=>{
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: data[key][0],
+                    })
+                  }
+                )
+              }
+          })
+    },
+
+    async eliminarUsuario({dispatch}, id){
+      let url = `/user/delete/${id}`
+      await axios.post(url)
+          .then((response) => {
+            dispatch('getUsers')
+            dispatch('alertaDelete')
+            }).catch(error => {
+              if(error.response.status == 422){
+                let data = error.response.data.errors
+                Object.keys(data).forEach(
+                  key=>{
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: data[key][0],
+                    })
+                  }
+                )
+              }
+          })
+    },
+
     clearForm({ commit, rootState }) {
       rootState.departamentos.selectDeptoReg = {}
       commit('CLEAR_FORM')
@@ -163,16 +182,22 @@ export default {
       commit('CAMBIAR_ACCION', accion)
     },
 
-    alerta({rootState}){
-      let up = rootState.alerta.up
+    async alerta({rootState}){
       let down = rootState.alerta.down
-      Swal.fire(
-        down.guardado,
-        down.descripcion,
-        down.tipo
-      )
-    }
+          Swal.fire(
+            down.guardado,
+            down.descripcion,
+            down.tipo
+          )
+      },
 
-    
+      async alertaDelete({rootState}){
+        let down = rootState.alerta.deletebody
+            Swal.fire(
+              down.guardado,
+              down.descripcion,
+              down.tipo
+            )
+        }
   },
 }

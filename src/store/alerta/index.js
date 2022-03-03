@@ -10,6 +10,19 @@ export default {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Si, Guardar!'
     },
+    delete: {
+      title: '¿Está seguro?',
+      text: "Confirma si desea eliminar el registro!",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Eliminar!'
+    },
+    deletebody: {
+      guardado: 'Eliminado!',
+      descripcion: 'Tu registro ha sido eliminado satisfactoriamente!.',
+      tipo: 'success'
+   },
     down: {
        guardado: 'Guardado!',
        descripcion: 'Tu registro ha sido guardado satisfactoriamente!.',

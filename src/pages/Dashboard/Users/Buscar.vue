@@ -35,10 +35,9 @@ export default {
       ...mapActions({
           getUsers:   'users/getUsers', // Trae todos los usuarios
           tipoAccion:   'users/cambiarAccion',
-          openDialog: 'users/openDialog',
-          limpiarFormulario: 'users/clearForm'
+          limpiarFormulario: 'users/clearForm',
+          loading: 'loading/loading'
       }),
-      ...mapActions({loading: 'loading/loading'}),
 
       async routeAgregar() {
           this.tipoAccion(1)

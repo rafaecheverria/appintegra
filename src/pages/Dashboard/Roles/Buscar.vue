@@ -1,10 +1,10 @@
 <template>
     <div class="row">
-          <div class="col-md-10">
+          <div class="col-md-9">
             <fg-input placeholder="Buscar" v-model="buscar" @keyup="search(1)"></fg-input>
           </div>
 
-          <div class="col-md-2 col-sm-12">
+          <div class="col-md-3">
             <l-button type="success" wide @click="routeAgregar()">
                 <span class="btn-label">
                     <i class="fa fa-plus"></i>
@@ -16,22 +16,38 @@
         </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
-import { mapFields } from 'vuex-map-fields';
+import { mapActions, mapState} from 'vuex'
+import { mapFields } from 'vuex-map-fields'
 
 export default {
+  data (){
+      return {
+        cargando: {
+          loading: true,
+          fullPage: false,
+        }
+      }
+    },
     computed: {
+      ...mapState('roles', ['load']),
       ...mapFields('roles', [ 'buscar']),
     },
      methods: {
-      ...mapActions({getRoles:'roles/getRoles'}), // Trae todos los roles
-      ...mapActions({loading: 'loading/loading'}), // Carga el Load de la tabla
+      ...mapActions({
+        getRoles: 'roles/getRoles', // Trae todos los roles
+        tipoAccion: 'roles/cambiarAccion', //Cambia la acciòn si edita o agrega
+        limpiarFormulario: 'roles/clearForm',
+        loading: 'loading/loading', //Icono de carga en la pantalla
 
+      }),
       async routeAgregar() {
-          await this.$router.push({ name: 'User Form' })
+        this.tipoAccion(1)
+        this.loading(this.load)
+        this.limpiarFormulario()
+        await this.$router.push({ name: 'Role Form' })
       },
       search(page) {
-        this.loading(true)
+        this.loading(this.cargando)
         this.getRoles(page)
       }
     },

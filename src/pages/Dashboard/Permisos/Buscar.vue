@@ -16,22 +16,38 @@
         </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import { mapFields } from 'vuex-map-fields';
 
 export default {
+  data (){
+      return {
+        cargando: {
+          loading: true,
+          fullPage: false,
+        }
+      }
+    },
     computed: {
+      ...mapState('permisos', ['load']),
       ...mapFields('permisos', [ 'buscar']),
     },
      methods: {
-      ...mapActions({getPermisos:'permisos/getPermisos'}), // Trae todos los roles
-      ...mapActions({loading: 'loading/loading'}), // Carga el Load de la tabla
+      ...mapActions({
+        getPermisos:'permisos/getPermisos',// Trae todos los permisos
+        tipoAccion: 'permisos/cambiarAccion', //Cambia la acciòn si edita o agrega
+        limpiarFormulario: 'permisos/clearForm',
+        loading: 'loading/loading'// Carga el Load de la tabla
+        }),
 
       async routeAgregar() {
-          await this.$router.push({ name: 'User Form' })
+        this.tipoAccion(1)
+        this.loading(this.load)
+        this.limpiarFormulario()
+        await this.$router.push({ name: 'Permisos Form' })
       },
       search(page) {
-        this.loading(true)
+        this.loading(this.cargando)
         this.getPermisos(page)
       }
     },

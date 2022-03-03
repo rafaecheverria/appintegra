@@ -9,17 +9,19 @@
                 </el-table-column>
                 <el-table-column
                 label="Actions">
-                <div class="td-actions">
-                    <a v-tooltip.top-center="'View Profile'" class="btn btn-info btn-link btn-xs" href="#">
-                    <i class="fa fa-user"></i>
-                    </a>
-                    <a v-tooltip.top-center="'Edit Profile'" class="btn btn-warning btn-link btn-xs">
-                    <i class="fa fa-edit"></i>
-                    </a>
-                    <a v-tooltip.top-center="'Delete'" class="btn btn-danger btn-link btn-xs">
-                    <i class="fa fa-close"></i>
-                    </a>
-                </div>
+                <template slot-scope="props">
+                  <div class="td-actions">
+                      <a v-tooltip.top-center="'View Profile'" class="btn btn-social btn-success btn-link" href="#">
+                      <i class="fa fa-user"></i>
+                      </a>
+                      <a v-tooltip.top-center="'Edit Profile'" class="btn btn-social btn-warning btn-link">
+                      <i class="fa fa-edit" @click="obtenerPermiso( props.row.id)"></i>
+                      </a>
+                      <a v-tooltip.top-center="'Delete'" class="btn btn-social btn-danger btn-link">
+                      <i class="fa fa-close" @click="deletePermiso( props.row.id)"></i>
+                      </a>
+                  </div>
+                </template>
                 </el-table-column>
             </el-table>
 
@@ -41,6 +43,8 @@ import {Table, TableColumn} from 'element-ui'
 import { mapActions, mapState } from 'vuex'
 import {Paginacion as LPaginacion} from 'src/components/index'
 import {Load} from 'src/components/index'
+import Swal from 'sweetalert2'
+
 export default {
   data() {
       return {
@@ -55,11 +59,29 @@ export default {
     },
   computed: {
       ...mapState('permisos', ['permisosState', 'pagination']),
+      ...mapState('alerta', ['delete']),
     },
      methods: {
       ...mapActions({
           getPermisos: 'permisos/getPermisos', // Trae todos los usuarios
+          getPermiso: 'permisos/getPermiso',// trae 1 Rol para editar
+          cambiarAccion: 'permisos/cambiarAccion',// Cambia la accion del boton agregar o actualizar en el form usuario
+          eliminarPermiso: 'permisos/eliminarPermiso'
       }),
+
+      obtenerPermiso(id){
+        this.cambiarAccion(2) //activa el boton actualizar usuario
+        this.getPermiso(id)
+        this.$router.push('/configuracion/permisos/form')
+      },
+
+      deletePermiso(id){
+        Swal.fire(this.delete).then((result) => {
+          if (result.isConfirmed) {
+            this.eliminarPermiso(id)
+          }
+        })
+      }
     },
   mounted () {
         this.getPermisos(this.pagination.current_page);

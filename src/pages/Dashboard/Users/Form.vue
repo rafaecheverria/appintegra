@@ -8,13 +8,15 @@
                      font-weight-light
                      text-white
                      small
-                     text-white">REGISTRAR USUARIO</span>
+                     text-white">REGISTRAR USUARIO
+        </span>
       </div>
       <div class="card-body">
     <ValidationObserver ref="form" v-slot="{ handleSubmit }">
         <!-- Fila 1 -->
-      <form @submit.prevent="handleSubmit(agregarUsuario)">
-        <div class="row">
+        <form @submit.prevent='handleSubmit(enviarFormulario)'>
+
+       <div class="row">
           <div class="col-lg-4">
             <ValidationProvider
                     name="rut"
@@ -26,7 +28,8 @@
                       data-vv-validate-on="none"
                       :error="failed ? 'el Rut es un campo requerido': null"
                       :hasSuccess="passed"
-                      nane="rut">
+                      :disabled="tipoAccion != 1"
+                      name="rut">
             </fg-input>
             </ValidationProvider>
           </div>
@@ -233,8 +236,8 @@
             Volver
           </l-button>
              <button  v-if="tipoAccion == 1" type="submit" class="btn btn-success btn-fill pull-right">Guardar Usuario</button>
-             <button  v-else type="submit" class="btn btn-info btn-fill pull-right">Actualizar Usuario</button>
-         
+             <button  v-else @click="enviarFormulario()" class="btn btn-info btn-fill pull-right">Actualizar Usuario</button>
+
           <div class="clearfix"></div>
       </form>
       </ValidationObserver>
@@ -249,8 +252,14 @@ import { mapFields } from 'vuex-map-fields'
 import { mapActions, mapState } from 'vuex'
 import { Select, Option, DatePicker} from 'element-ui'
 import { Load } from 'src/components/index'
+import Swal from 'sweetalert2'
 
   export default {
+    data (){
+      return {
+        accion:''
+      }
+    },
     components: {
       Load,
       [Select.name]: Select,
@@ -273,16 +282,28 @@ import { Load } from 'src/components/index'
           selectCargos: 'cargos/selectCargo',
           insertaUsuario: 'users/insertaUsuario',
           limpiarFormulario: 'users/clearForm',
-          loading: 'loading/loading'
+          loading: 'loading/loading',
+          insertar: 'users/insertaUsuario',
         }),
 
-     async agregarUsuario() {
+     async enviarFormulario() {
         const isValid = await this.$refs.form.validate();
           if (!isValid) {
             return
           }
         this.$refs.form.reset(); //resetea los errores vee-validate
-        this.insertaUsuario(this.form)
+        Swal.fire(this.up).then((result) => {
+          if (result.isConfirmed) {
+            this.insertar({form: this.form, accion: this.tipoAccion}).then(() =>{
+              if(this.tipoAccion !=1)
+                this.$router.push('/configuracion/user')
+              else
+                return
+            }).catch((err) => {
+              console.log(err)
+            })
+          }
+        })
       },
 
       volver(){

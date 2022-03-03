@@ -5,7 +5,8 @@
             <el-table :lazy="false" :data="usersState.data" :emptyText="vacio">
                 <el-table-column type="index"></el-table-column>
                 <el-table-column prop="nombres"
-                                label="Nombres">
+                                label="Nombres"
+                                >
                 </el-table-column>
                 <el-table-column prop="apellidos"
                                 label="Apellidos">
@@ -14,17 +15,19 @@
                                 label="Email">
                 </el-table-column>
                 <el-table-column
-                label="Acciones">
+                >
                 <template slot-scope="props">
                 <div class="td-actions">
-                    <a v-tooltip.top-center="'View Profile'" class="btn btn-info btn-link btn-xs" href="#">
-                    <i class="fa fa-user"></i>
+                    <a v-tooltip.top-center="'Roles de Usuario'" class="btn btn-social btn-info btn-link" href="#">
+                      <i class="fa fa-user"></i>
                     </a>
-                    <a v-tooltip.top-center="'Edit Profile'" class="btn btn-warning btn-link btn-xs">
-                    <i class="fa fa-edit" @click="obtenerUser( props.row.id)"></i>
+
+                    <a @click="obtenerUser( props.row.id)" v-tooltip.top-center="'Editar Usuario'" class="btn btn-social btn-warning btn-link">
+                      <i class="fa fa-edit"></i>
                     </a>
-                    <a v-tooltip.top-center="'Delete'" class="btn btn-danger btn-link btn-xs">
-                    <i class="fa fa-close"></i>
+
+                    <a @click="eliminarUsuario( props.row.id)" v-tooltip.top-center="'Eliminar Usuario'" class="btn btn-social btn-danger btn-link">
+                      <i class="fa fa-close"></i>
                     </a>
                 </div>
                 </template>
@@ -48,6 +51,8 @@ import { Table, TableColumn } from 'element-ui'
 import { mapActions, mapState } from 'vuex'
 import { Paginacion as LPaginacion } from 'src/components/index'
 import { Load } from 'src/components/index'
+import Swal from 'sweetalert2'
+
 export default {
     data() {
       return {
@@ -62,19 +67,30 @@ export default {
     },
     computed: {
       ...mapState('users', ['usersState', 'pagination']),
+      ...mapState('alerta', ['delete']),
     },
      methods: {
       ...mapActions({
           getUsers: 'users/getUsers', // Trae todos los usuarios
           getUser: 'users/getUser', //Trae 1 usuario para editar
           cambiarAccion: 'users/cambiarAccion', // Cambia la accion del boton agregar o actualizar en el form usuario
+          eliminarUser: 'users/eliminarUsuario'
       }),
 
        obtenerUser(id){
         this.cambiarAccion(2) //activa el boton actualizar usuario
         this.getUser(id)
         this.$router.push('/configuracion/user/form')
+      },
+
+      eliminarUsuario(id){
+        Swal.fire(this.delete).then((result) => {
+          if (result.isConfirmed) {
+            this.eliminarUser(id)
+          }
+        })
       }
+
     },
 
     mounted () {
