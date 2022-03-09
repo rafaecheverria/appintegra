@@ -15,6 +15,7 @@ import Login from 'src/pages/Auth/Login.vue'
 
 //Role
 import FormRole from 'src/pages/Dashboard/Roles/Form'
+import FormAsignarRole from 'src/pages/Dashboard/Roles/FormAsignarRole'
 
 import FormPermiso from 'src/pages/Dashboard/Permisos/Form'
 
@@ -167,6 +168,11 @@ let configMenu = {
       component: FormRole
     },
     {
+      path: 'role/form/asignar',
+      name: 'Asignar Form',
+      component: FormAsignarRole
+    },
+    {
       path: 'permisos',
       name: 'Permisos',
       component: Permissions
@@ -176,6 +182,7 @@ let configMenu = {
       name: 'Permisos Form',
       component: FormPermiso
     },
+
   ]
 }
 

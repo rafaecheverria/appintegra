@@ -6,6 +6,8 @@ export default {
   namespaced: true,
   state: {
     rolesState: {},
+    permisos:{},
+    mypermisos:{},
     pagination: {},
     load: { loading: false, fullPage: false },
     offset: 4,

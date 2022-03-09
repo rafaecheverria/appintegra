@@ -11,7 +11,7 @@
                 label="Actions">
                 <template slot-scope="props">
                 <div class="td-actions">
-                  <a @click="'#'" v-tooltip.top-center="'Asignar Permisos'" class="btn btn-social btn-success btn-link">
+                  <a @click="obtenerPermisosRol( props.row.id)" v-tooltip.top-center="'Asignar Permisos'" class="btn btn-social btn-success btn-link">
                     <i class="fa fa-cog"></i>
                     </a>
                     <a  @click="obtenerRole( props.row.id)" v-tooltip.top-center="'Editar Rol'" class="btn btn-social btn-warning btn-link">
@@ -73,6 +73,12 @@ export default {
         this.cambiarAccion(2) //activa el boton actualizar usuario
         this.getRole(id)
         this.$router.push('/configuracion/role/form')
+      },
+
+      obtenerPermisosRol(id){
+        this.cambiarAccion(3) //activa el boton actualizar usuario
+        //this.getRole(id)
+        this.$router.push('/configuracion/role/form/asignar')
       },
 
       eliminarRole(id){
