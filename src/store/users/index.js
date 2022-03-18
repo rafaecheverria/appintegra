@@ -8,6 +8,8 @@ export default {
     usersState: {},
     pagination: {},
     tipoAccion: 0,
+    array_roles:[],
+    roles:[],
     offset: 4,
     dialog: false,
     loading: true,
@@ -38,6 +40,18 @@ export default {
 
     GET_USERS(state, usersAccion) {
       state.usersState = usersAccion
+    },
+
+    GET_ID_USER(state, data) {
+      state.form.id = data
+    },
+
+    GET_ALL_ROLES(state, data) {
+      state.array_roles = data
+    },
+
+    GET_MY_ROLES(state, data) {
+      state.roles = data
     },
 
     CAMBIAR_ACCION(state, accion) {
@@ -173,6 +187,46 @@ export default {
           })
     },
 
+    async obtenerRoles({commit}, id){
+      var url = `/roles/selectRoles/${id}`
+        await axios.get(url)
+              .then((response) => {
+                console.log(response)
+          //Obtiene todos los permisos
+          //this.arrayPermisos = respuesta.permisos;
+          commit('GET_ALL_ROLES', response.data.roles)
+          //Obtiene todos los roles asociados al usuario seleccionado
+          commit('GET_MY_ROLES', response.data.my_roles)
+          //this.permisos = respuesta.my_permisos;
+          commit('GET_ID_USER', response.data.user.id)
+        }).catch(function (error) {
+          console.log(error);
+        })
+      },
+
+    async insertarRolUser({dispatch}, data){
+      var url = `user/agregarRolUsuario/${data.id}`
+      await axios.post(url, data)
+            .then((response) => {
+              console.log(response)
+              dispatch('alerta')
+              }).catch(error => {
+                if(error.response.status == 422){
+                  let data = error.response.data.errors
+                  Object.keys(data).forEach(
+                    key=>{
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data[key][0],
+                      })
+                    }
+                  )
+                }
+            })
+    },
+  
+
     clearForm({ commit, rootState }) {
       rootState.departamentos.selectDeptoReg = {}
       commit('CLEAR_FORM')
@@ -191,13 +245,13 @@ export default {
           )
       },
 
-      async alertaDelete({rootState}){
-        let down = rootState.alerta.deletebody
-            Swal.fire(
-              down.guardado,
-              down.descripcion,
-              down.tipo
-            )
-        }
+    async alertaDelete({rootState}){
+      let down = rootState.alerta.deletebody
+          Swal.fire(
+            down.guardado,
+            down.descripcion,
+            down.tipo
+          )
+      }
   },
 }

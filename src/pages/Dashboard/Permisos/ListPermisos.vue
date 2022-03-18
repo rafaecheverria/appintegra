@@ -11,9 +11,6 @@
                 label="Actions">
                 <template slot-scope="props">
                   <div class="td-actions">
-                      <a v-tooltip.top-center="'View Profile'" class="btn btn-social btn-success btn-link" href="#">
-                      <i class="fa fa-user"></i>
-                      </a>
                       <a v-tooltip.top-center="'Edit Profile'" class="btn btn-social btn-warning btn-link">
                       <i class="fa fa-edit" @click="obtenerPermiso( props.row.id)"></i>
                       </a>

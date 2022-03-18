@@ -6,8 +6,8 @@ export default {
   namespaced: true,
   state: {
     rolesState: {},
-    permisos:{},
-    mypermisos:{},
+    permisos:[],
+    array_permisos:[],
     pagination: {},
     load: { loading: false, fullPage: false },
     offset: 4,
@@ -29,6 +29,9 @@ export default {
   mutations: {
     updateField,
 
+    GET_ID_ROL(state, data) {
+      state.form.id = data
+    },
     GET_ROLES(state, rolesAccion) {
       state.rolesState = rolesAccion
     },
@@ -36,6 +39,15 @@ export default {
       state.form.name = data.role.name
       state.form.id = data.role.id
     },
+
+    GET_ALL_PERMISSIONS(state, data) {
+      state.array_permisos = data
+    },
+
+    GET_MY_PERMISSIONS(state, data) {
+      state.permisos = data
+    },
+
     CAMBIAR_ACCION(state, accion) {
       state.tipoAccion = accion
     },
@@ -140,7 +152,47 @@ export default {
           })
     },
 
-    async alerta({rootState}){
+async obtenerPermisos({commit}, id){
+
+    var url = `/permisos/selectPermisos/${id}`
+      await axios.get(url)
+            .then((response) => {
+              console.log(response)
+        //Obtiene todos los permisos
+        //this.arrayPermisos = respuesta.permisos;
+        commit('GET_ALL_PERMISSIONS', response.data.permisos)
+        //Obtiene todos los roles asociados al usuario seleccionado
+        commit('GET_MY_PERMISSIONS', response.data.my_permisos)
+        //this.permisos = respuesta.my_permisos;
+        commit('GET_ID_ROL', response.data.rol.id)
+      }).catch(function (error) {
+        console.log(error);
+      })
+    },
+
+  
+  async insertarPermisosRol({dispatch}, data){
+    var url = `roles/agregarPermisosRol/${data.id}`
+    await axios.post(url, data)
+          .then((response) => {
+            dispatch('alerta')
+            }).catch(error => {
+              if(error.response.status == 422){
+                let data = error.response.data.errors
+                Object.keys(data).forEach(
+                  key=>{
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: data[key][0],
+                    })
+                  }
+                )
+              }
+          })
+  },
+
+  async alerta({rootState}){
       let down = rootState.alerta.down
           Swal.fire(
             down.guardado,

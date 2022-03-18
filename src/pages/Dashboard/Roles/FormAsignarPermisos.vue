@@ -19,7 +19,7 @@
        <div class="row">
           <div class="col-lg-4">
             <ValidationProvider
-                    name="rol"
+                    name="permisos"
                     rules="required"
                     v-slot="{ failed }"
                   >
@@ -28,8 +28,8 @@
                   placeholder="Seleccione un rol para el ususario"
                   v-model="permisos"
                   multiple>
-                <el-option v-for="permiso in arrayPermisos"
-                    :error="failed ? 'Departamento es un campo requerido': null"
+                <el-option v-for="permiso in array_permisos"
+                    :error="failed ? 'Permisos es un campo requerido': null"
                     class="select-primary"
                     :value="permiso.id"
                     :label="permiso.name"
@@ -48,9 +48,8 @@
             </span>
             Volver
           </l-button>
-             <button  v-if="tipoAccion == 1" type="submit" class="btn btn-success btn-fill pull-right">Asignar Roles</button>
-             <button  v-if="tipoAccion==2" @click="enviarFormulario()" class="btn btn-info btn-fill pull-right">Actualizar Rol</button>
-             <button  v-else @click="enviarFormulario()" class="btn btn-warning btn-fill pull-right">Asignar Roles</button>
+             <button type="submit" class="btn btn-success btn-fill pull-right">Asignar Permisos</button>
+             
 
           <div class="clearfix"></div>
       </form>
@@ -81,8 +80,8 @@ import Swal from 'sweetalert2'
       [DatePicker.name]: DatePicker,
     },
     computed: {
-      ...mapFields('roles', [ 'form']),
-      ...mapState('roles', ['tipoAccion', 'permisos', 'mypermisos']),
+      ...mapFields('roles', [ 'form', 'permisos']),
+      ...mapState('roles', ['tipoAccion', 'array_permisos']),
       ...mapState('alerta', ['up']),
     },
 
@@ -90,7 +89,7 @@ import Swal from 'sweetalert2'
       ...mapActions({
           limpiarFormulario: 'roles/clearForm',
           loading: 'loading/loading',
-          insertar: 'roles/insertaRol',
+          insertar: 'roles/insertarPermisosRol',
         }),
 
      async enviarFormulario() {
@@ -101,11 +100,8 @@ import Swal from 'sweetalert2'
         this.$refs.form.reset(); //resetea los errores vee-validate
         Swal.fire(this.up).then((result) => {
           if (result.isConfirmed) {
-            this.insertar({form: this.form, accion: this.tipoAccion}).then(() =>{
-              if(this.tipoAccion !=1)
-                this.$router.push('/configuracion/roles')
-              else
-                return
+            this.insertar({permisos: this.permisos, id: this.form.id}).then(() =>{
+              this.$router.push('/configuracion/roles')
             }).catch((err) => {
               console.log(err)
             })

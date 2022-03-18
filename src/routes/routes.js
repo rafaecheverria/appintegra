@@ -12,11 +12,11 @@ import Stats from 'src/pages/Dashboard/Dashboard/Stats.vue'
 import User from 'src/pages/Dashboard/Users'
 import FormUser from 'src/pages/Dashboard/Users/Form'
 import Login from 'src/pages/Auth/Login.vue'
+import FormAsignarRol from 'src/pages/Dashboard/Users/FormAsignarRol'
 
 //Role
 import FormRole from 'src/pages/Dashboard/Roles/Form'
-import FormAsignarRole from 'src/pages/Dashboard/Roles/FormAsignarRole'
-
+import FormAsignarPermisos from 'src/pages/Dashboard/Roles/FormAsignarPermisos'
 import FormPermiso from 'src/pages/Dashboard/Permisos/Form'
 
 // Nuevos componentes
@@ -170,8 +170,14 @@ let configMenu = {
     {
       path: 'role/form/asignar',
       name: 'Asignar Form',
-      component: FormAsignarRole
+      component: FormAsignarPermisos
     },
+    {
+      path: 'user/form/asignar',
+      name: 'Asignar Rol',
+      component: FormAsignarRol
+    },
+    
     {
       path: 'permisos',
       name: 'Permisos',

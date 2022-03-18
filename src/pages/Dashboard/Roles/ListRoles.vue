@@ -66,7 +66,8 @@ export default {
           getRoles: 'roles/getRoles', // Trae todos los usuarios
           getRole: 'roles/getRole',// trae 1 Rol para editar
           cambiarAccion: 'roles/cambiarAccion',// Cambia la accion del boton agregar o actualizar en el form usuario
-          eliminarRol: 'roles/eliminarRol'
+          eliminarRol: 'roles/eliminarRol',
+          getPermisosRol: 'roles/obtenerPermisos'
       }),
 
       obtenerRole(id){
@@ -77,7 +78,7 @@ export default {
 
       obtenerPermisosRol(id){
         this.cambiarAccion(3) //activa el boton actualizar usuario
-        //this.getRole(id)
+        this.getPermisosRol(id)
         this.$router.push('/configuracion/role/form/asignar')
       },
 

@@ -18,7 +18,7 @@
                 >
                 <template slot-scope="props">
                 <div class="td-actions">
-                    <a v-tooltip.top-center="'Roles de Usuario'" class="btn btn-social btn-info btn-link" href="#">
+                    <a @click="obtenerRolUsuario( props.row.id)" v-tooltip.top-center="'Roles de Usuario'" class="btn btn-social btn-info btn-link" href="#">
                       <i class="fa fa-user"></i>
                     </a>
 
@@ -74,13 +74,19 @@ export default {
           getUsers: 'users/getUsers', // Trae todos los usuarios
           getUser: 'users/getUser', //Trae 1 usuario para editar
           cambiarAccion: 'users/cambiarAccion', // Cambia la accion del boton agregar o actualizar en el form usuario
-          eliminarUser: 'users/eliminarUsuario'
+          eliminarUser: 'users/eliminarUsuario',
+          getRolUsuario: 'users/obtenerRoles'
       }),
 
        obtenerUser(id){
         this.cambiarAccion(2) //activa el boton actualizar usuario
         this.getUser(id)
         this.$router.push('/configuracion/user/form')
+      },
+
+      obtenerRolUsuario(id){
+        this.getRolUsuario(id)
+        this.$router.push('/configuracion/user/form/asignar')
       },
 
       eliminarUsuario(id){
