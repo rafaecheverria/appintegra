@@ -12,14 +12,14 @@ store.subscribe(mutation => {
         axios.defaults.headers.Authorization = null
         localStorage.removeItem('token')
         console.log("fin de la sesion")
-        router.push({name: 'Login'})
+        //router.push({name: 'Login'})
       }
       break
     }
-    // case 'users/SET_CONSTITUENCY': {
-    //   axios.defaults.headers.Authorization = `Bearer ${mutation.payload}`
-    //   break
-    // }
+     case 'users/SET_CONSTITUENCY': {
+       axios.defaults.headers.Authorization = `Bearer ${mutation.payload}`
+       break
+     }
     default:
   }
 })

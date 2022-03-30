@@ -9,7 +9,7 @@ import regiones from './regiones'
 import departamentos from './departamentos'
 import cargos from './cargos'
 import alerta from './alerta'
-
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
@@ -25,4 +25,5 @@ export default new Vuex.Store({
     cargos,
     alerta
   },
+  plugins: [createPersistedState()],
 })

@@ -14,7 +14,7 @@
 
  */
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+//import VueRouter from 'vue-router'
 import LightBootstrap from './light-bootstrap-main'
 import axios from 'axios'
 import store from './store'
@@ -31,30 +31,24 @@ require('@/store/subscriber')
 axios.defaults.baseURL = 'http://localhost:9000/api/v1/'
 
 // router setup
-import routes from './routes/routes'
-// plugin setup
-Vue.use(VueRouter)
+import router from './routes/routes'
 Vue.use(LightBootstrap)
-
-// configure router
-const router = new VueRouter({
-  routes, // short for routes: routes
-  linkActiveClass: 'active',
-  mode: 'history',
-})
-
-// mantiene la session activa al refrescar la página
-//iterar si el token es null
-
-//store.dispatch('auth/mensaje')
-
-//setInterval(function(){
- // console.log("Hola")
-//},1000);
 
 store.dispatch('auth/attempt', localStorage.getItem('token'))
 
 /* eslint-disable no-new */
+//cierra sesion si ek servidor arroja error 401
+axios.interceptors.response.use(undefined, function(error) {
+  if (error) {
+    const originalRequest = error.config;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      store.dispatch("logout");
+      return router.push("/login");
+    }
+  }
+});
+
 new Vue({
   el: '#app',
   render: h => h(App),

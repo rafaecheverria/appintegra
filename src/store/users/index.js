@@ -105,7 +105,7 @@ export default {
         })
         .catch(function(error){
           commit('SET_CONSTITUENCY', null);
-          this.$router.push({name: 'login'})
+          this.$router.push({name: 'Login'})
           console.log("se cerro la sesion")
         })
     },

@@ -8,9 +8,10 @@ export default {
   },
 
   getters: {
-    authenticated(state) {
+    isAuthenticated: (state) => !!state.user,
+    /*authenticated(state) {
       return state.token && state.user
-    },
+    },*/
     user(state) {
       return state.user
     },
@@ -26,9 +27,10 @@ export default {
   },
 
   actions: {
-    async login({ dispatch }, credentials) {
+    async login({ dispatch, commit}, credentials) {
       const response = await axios.post('auth/login', credentials)
-      return dispatch('attempt', response.data.token)
+      commit("SET_USER", response.data.usuario.nombres);
+      commit('SET_TOKEN', response.data.token)
     },
 
     async attempt({ commit, state }, token) {
@@ -49,6 +51,7 @@ export default {
         commit('SET_USER', null)
       }
     },
+
     async logout({ commit }) {
       return axios.post('auth/logout').then(() => {
         commit('SET_TOKEN', null)

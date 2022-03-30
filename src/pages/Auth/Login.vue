@@ -63,6 +63,7 @@ import { extend } from "vee-validate";
 import { required, email, min } from "vee-validate/dist/rules";
 import { mapActions } from 'vuex'
 import { Load } from 'src/components/index'
+import store from '../../store'
 
 extend("email", email);
 extend("required", required);
@@ -104,12 +105,11 @@ extend("min", min);
             loading: 'loading/loading',
         }),
         async procesarFormulario() {
-            this.loading(this.load)
-            await this.login(this.form)
-           
-            await this.$router.push({ name: 'Home' })
-            this.form.email = ''
-            this.form.password = ''
+          this.loading(this.load)
+          await this.login(this.form)
+          await this.$router.push({name : 'Home'})
+          this.form.email = ''
+          this.form.password = ''
         },
       toggleNavbar () {
         document.body.classList.toggle('nav-open')
