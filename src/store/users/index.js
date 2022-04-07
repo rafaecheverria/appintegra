@@ -46,6 +46,10 @@ export default {
       state.form.id = data
     },
 
+    GET_NAME_USER(state, data) {
+      state.form.nombres = data
+    },
+
     GET_ALL_ROLES(state, data) {
       state.array_roles = data
     },
@@ -198,7 +202,10 @@ export default {
           //Obtiene todos los roles asociados al usuario seleccionado
           commit('GET_MY_ROLES', response.data.my_roles)
           //this.permisos = respuesta.my_permisos;
-          commit('GET_ID_USER', response.data.user.id)
+          commit('GET_ID_USER', response.data.user_id)
+
+          commit('GET_NAME_USER', response.data.user)
+
         }).catch(function (error) {
           console.log(error);
         })
@@ -225,7 +232,7 @@ export default {
                 }
             })
     },
-  
+
 
     clearForm({ commit, rootState }) {
       rootState.departamentos.selectDeptoReg = {}

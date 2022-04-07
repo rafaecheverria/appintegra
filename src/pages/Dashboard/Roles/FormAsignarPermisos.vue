@@ -12,6 +12,13 @@
         </span>
       </div>
       <div class="card-body">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="typo-line">
+              <h4><p class="category"> Asignar Permisos al Rol: <strong>{{ form.name }}</strong></p></h4>
+            </div>
+          </div>
+        </div>
     <ValidationObserver ref="form" v-slot="{ handleSubmit }">
         <!-- Fila 1 -->
         <form @submit.prevent='handleSubmit(enviarFormulario)'>
@@ -49,7 +56,7 @@
             Volver
           </l-button>
              <button type="submit" class="btn btn-success btn-fill pull-right">Asignar Permisos</button>
-             
+
 
           <div class="clearfix"></div>
       </form>

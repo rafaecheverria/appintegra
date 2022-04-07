@@ -5,6 +5,7 @@ export default {
   state: {
     token: null,
     user: null,
+    permisos: []
   },
 
   getters: {
@@ -21,6 +22,9 @@ export default {
     SET_USER(state, user) {
       state.user = user
     },
+    SET_PERMISOS(state, permisos) {
+      state.permisos = permisos
+    },
     SET_TOKEN(state, token) {
       state.token = token
     },
@@ -31,6 +35,7 @@ export default {
       const response = await axios.post('auth/login', credentials)
       commit("SET_USER", response.data.usuario.nombres);
       commit('SET_TOKEN', response.data.token)
+      commit('SET_PERMISOS', response.data.permisos)
     },
 
     async attempt({ commit, state }, token) {
@@ -49,6 +54,7 @@ export default {
         console.log("la sesion expiró")
         commit('SET_TOKEN', null)
         commit('SET_USER', null)
+        commit('SET_PERMISOS', [])
       }
     },
 
@@ -57,7 +63,7 @@ export default {
         commit('SET_TOKEN', null)
         commit('SET_USER', null)
       })
-    },     
+    },
   },
   modules: {},
 }

@@ -40,6 +40,10 @@ export default {
       state.form.id = data.role.id
     },
 
+    GET_NAME_ROL(state, data) {
+      state.form.name = data
+    },
+
     GET_ALL_PERMISSIONS(state, data) {
       state.array_permisos = data
     },
@@ -165,12 +169,15 @@ async obtenerPermisos({commit}, id){
         commit('GET_MY_PERMISSIONS', response.data.my_permisos)
         //this.permisos = respuesta.my_permisos;
         commit('GET_ID_ROL', response.data.rol.id)
+
+        commit('GET_NAME_ROL', response.data.rol.name)
+
       }).catch(function (error) {
         console.log(error);
       })
     },
 
-  
+
   async insertarPermisosRol({dispatch}, data){
     var url = `roles/agregarPermisosRol/${data.id}`
     await axios.post(url, data)
