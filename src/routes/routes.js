@@ -14,8 +14,9 @@ const Home = () => import('src/pages/Dashboard/Dashboard/Home.vue')
 const Login = () => import('src/pages/Auth/Login.vue')
 const Role = () => import('src/pages/Dashboard/Roles')
 const Permissions = () => import('src/pages/Dashboard/Permisos')
-
-import Indicadores from 'src/pages/Dashboard/Indicadores'
+const Estadistica = () => import('src/pages/Dashboard/Estadisticas')
+const Transporte = () => import('src/pages/Dashboard/Transporte')
+const Mitigacion = () => import('src/pages/Dashboard/Mitigaciones')
 
 Vue.use(VueRouter);
 
@@ -55,7 +56,7 @@ let configMenu = {
       name: 'Asignar Rol',
       component: FormAsignarRol
     },
-
+    
     {
       path: 'permisos',
       name: 'Permisos',
@@ -70,18 +71,29 @@ let configMenu = {
   ]
 }
 
-let moduloCobertura = {
+let cobertura = {
   path: '/cobertura',
   component: DashboardLayout,
   meta: { requiresAuth: true },
   children: [
     {
-      path: 'indicadores',
-      name: 'Indicadores',
-      component: Indicadores,
+      path: 'estadisticas',
+      name: 'Estadisticas',
+      component: Estadistica,
       meta: { requiresAuth: true },
     },
-
+    {
+      path: 'transporte',
+      name: 'Transporte',
+      component: Transporte,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: 'mitigaciones',
+      name: 'Mitigaciones',
+      component: Mitigacion,
+      meta: { requiresAuth: true },
+    },
   ]
 }
 
@@ -90,13 +102,13 @@ let loginPage = {
   name: 'Login',
   component: Login,
   meta: { guest: true },
-
+ 
 }
 
 const routes = [
   loginPage,
   configMenu,
-  moduloCobertura,
+  cobertura,
   {
     path: '/',
     component: DashboardLayout,
@@ -122,7 +134,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if ( store.getters['auth/isAuthenticated']) {
+    if ( store.getters['auth/isAuthenticated']) { 
       next();
       return;
     }
@@ -144,4 +156,4 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-export default router
+export default router 
