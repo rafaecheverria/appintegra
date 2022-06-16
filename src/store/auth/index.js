@@ -5,7 +5,7 @@ export default {
   state: {
     token: null,
     user: null,
-    permisos: []
+    permisos: {}
   },
 
   getters: {
@@ -31,7 +31,7 @@ export default {
   },
 
   actions: {
-    async login({ dispatch, commit}, credentials) {
+    async login({ dispatch, commit }, credentials) {
       const response = await axios.post('auth/login', credentials)
       commit("SET_USER", response.data.usuario.nombres);
       commit('SET_TOKEN', response.data.token)
@@ -62,6 +62,7 @@ export default {
       return axios.post('auth/logout').then(() => {
         commit('SET_TOKEN', null)
         commit('SET_USER', null)
+        commit('SET_PERMISOS', [])
       })
     },
   },

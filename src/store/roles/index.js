@@ -161,7 +161,6 @@ async obtenerPermisos({commit}, id){
     var url = `/permisos/selectPermisos/${id}`
       await axios.get(url)
             .then((response) => {
-              console.log(response)
         //Obtiene todos los permisos
         //this.arrayPermisos = respuesta.permisos;
         commit('GET_ALL_PERMISSIONS', response.data.permisos)

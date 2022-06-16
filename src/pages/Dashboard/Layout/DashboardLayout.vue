@@ -7,11 +7,19 @@
       <template slot="links">
         <sidebar-item :link="{name: 'Inicio', icon: 'nc-icon nc-chart-pie-35', path: '/login'}">
         </sidebar-item>
+
+        <sidebar-item :link="{name: 'Cobertura', icon: 'nc-icon nc-settings-gear-64'}">
+          <sidebar-item :link="{name: 'Indicadores', path: '/cobertura/indicadores'}"></sidebar-item>
+          <sidebar-item :link="{name: 'Transporte', path: '#'}"></sidebar-item>
+          <sidebar-item :link="{name: 'Mitigaciones', path: '#'}"></sidebar-item>
+        </sidebar-item>
+
         <sidebar-item :link="{name: 'Configuración', icon: 'nc-icon nc-settings-gear-64'}">
           <sidebar-item :link="{name: 'Usuarios', path: '/configuracion/user'}"></sidebar-item>
           <sidebar-item :link="{name: 'Roles', path: '/configuracion/roles'}"></sidebar-item>
           <sidebar-item :link="{name: 'Permisos', path: '/configuracion/permisos'}"></sidebar-item>
         </sidebar-item>
+
       </template>
     </side-bar>
     <div class="main-panel">

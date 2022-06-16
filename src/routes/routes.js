@@ -15,6 +15,8 @@ const Login = () => import('src/pages/Auth/Login.vue')
 const Role = () => import('src/pages/Dashboard/Roles')
 const Permissions = () => import('src/pages/Dashboard/Permisos')
 
+import Indicadores from 'src/pages/Dashboard/Indicadores'
+
 Vue.use(VueRouter);
 
 let configMenu = {
@@ -53,7 +55,7 @@ let configMenu = {
       name: 'Asignar Rol',
       component: FormAsignarRol
     },
-    
+
     {
       path: 'permisos',
       name: 'Permisos',
@@ -68,17 +70,33 @@ let configMenu = {
   ]
 }
 
+let moduloCobertura = {
+  path: '/cobertura',
+  component: DashboardLayout,
+  meta: { requiresAuth: true },
+  children: [
+    {
+      path: 'indicadores',
+      name: 'Indicadores',
+      component: Indicadores,
+      meta: { requiresAuth: true },
+    },
+
+  ]
+}
+
 let loginPage = {
   path: '/login',
   name: 'Login',
   component: Login,
   meta: { guest: true },
- 
+
 }
 
 const routes = [
   loginPage,
   configMenu,
+  moduloCobertura,
   {
     path: '/',
     component: DashboardLayout,
@@ -104,7 +122,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if ( store.getters['auth/isAuthenticated']) { 
+    if ( store.getters['auth/isAuthenticated']) {
       next();
       return;
     }
@@ -126,4 +144,4 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-export default router 
+export default router

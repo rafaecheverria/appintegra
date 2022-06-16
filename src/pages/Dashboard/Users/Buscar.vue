@@ -1,17 +1,21 @@
 <template>
     <div class="row">
-          <div class="col-md-10">
+          <div class="col-md-9">
             <fg-input placeholder="Buscar" v-model="buscar" @keyup="search(1)"></fg-input>
           </div>
 
-          <div class="col-md-2 col-sm-12">
-            <l-button type="success" wide @click="routeAgregar()">
-                <span class="btn-label">
-                    <i class="fa fa-plus"></i>
-                </span>
-                Agregar
-              </l-button>
-          </div>
+            <div v-if="permisos.find(item => item.name === 'crear_usuarios')">
+              <div class="col-md-2 col-sm-12">
+                <l-button type="success" wide @click="routeAgregar()">
+                    <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                    </span>
+                    Agregar
+                  </l-button>
+              </div>
+             </div>
+
+
           <!-- <Agregar /> -->
         </div>
 </template>
@@ -29,6 +33,7 @@ export default {
     },
     computed: {
       ...mapState('users', ['load']),
+      ...mapState('auth', ['permisos']),
       ...mapFields('users', [ 'buscar']),
     },
      methods: {
