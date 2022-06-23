@@ -10,6 +10,7 @@
                 v-model="dateTimePicker"
                 type="datetimerange"
                 placeholder="Datetime picker here"
+                format="YYYY"
                 :picker-options="pickerOptions1">
               </el-date-picker>
             </fg-input>
