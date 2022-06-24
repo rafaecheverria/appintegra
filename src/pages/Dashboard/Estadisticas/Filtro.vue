@@ -4,6 +4,7 @@
             <fg-input>
               <el-date-picker
                 v-model="filtros.fecha"
+                format="MM-yyyy"
                 type="month"
                 placeholder="Seleccione Año"
                 >
@@ -11,16 +12,29 @@
             </fg-input>
           </div>
 
-          <div class="col-lg-3">
+           <div class="col-lg-3">
+             <ValidationProvider
+                    rules="required"
+                    v-slot="{ failed }"
+                  >
               <el-select class="select-default"
-                  size="large"
-                  placeholder="Seleccione Establecimiento"
-                  v-model="filtros.jardin">
-                <el-option value="JI LAS MARIPOSAS">JI LAS MARIPOSAS</el-option>
-                <el-option value="JI BLANCA NIEVES Y LOS 7 ENANITOS">JI BLANCA NIEVES Y LOS 7 ENANITOS</el-option>
-                <el-option value="JI BERNARDO OHIGGINS">JI BERNARDO OHIGGINS</el-option>
-                <el-option value="OFINA REGIONAL">OFINA REGIONAL</el-option>
-              </el-select>
+                          size="large"
+                          placeholder="Seleccione Jadín"
+                          v-model="filtros.jardin"
+                          noDataText="Sin Datos"
+                          filterable
+                          noMatchText="No encontrado"
+                          >
+              <el-option v-for="departamento in selectDeptoFiltros"
+                        class="select-primary"
+                        :error="failed ? 'Departamento es un campo requerido': null"
+                        :value="departamento.id"
+                        :label="departamento.departamento"
+                        :key="departamento.id">
+              </el-option>
+          </el-select>
+          <div class="text-danger invalid-feedback" style="display: block;"> {{ failed ? 'Jardín es un campo requerido': null }} </div>
+          </ValidationProvider>
           </div>
 
           <div class="col-lg-3">
@@ -51,6 +65,8 @@
 <script>
 import { Select, Option, DatePicker} from 'element-ui'
 import { mapFields } from 'vuex-map-fields';
+import { mapActions, mapState } from 'vuex'
+import moment from 'moment'
 export default {
       components: {
         [Select.name]: Select,
@@ -62,19 +78,30 @@ export default {
         cargando: {
           loading: true,
           fullPage: false,
-          datepicker:'',
         }
       }
     },
 
     computed: {
       ...mapFields('estadisticas', [ 'filtros']),
+      ...mapState('departamentos', ['selectDeptoFiltros']),
+      mes() {
+        return moment(this.filtros.fecha, 'M-YY').month()+1
+      },
+      ano() {
+        return moment(this.filtros.fecha, 'M-YY').year()
+      }
     },
      methods: {
+      ...mapActions({
+          selectDepartamentosFiltro: 'departamentos/DeptoFiltros',
+        }),
       consultar(){
-        console.log(this.filtros.fecha)
+        console.log(this.mes)
       },
-
     },
+     mounted () {
+      this.selectDepartamentosFiltro()
+      },
 }
 </script>

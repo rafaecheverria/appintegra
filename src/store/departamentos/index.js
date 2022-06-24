@@ -11,7 +11,8 @@ export default {
     buscar: '',
     title: 'Departamentos',
     category: 'Información exclusiva del administrador del sistema',
-    selectDeptoReg: {}
+    selectDeptoReg: {},
+    selectDeptoFiltros: {}
   },
 
   getters: {
@@ -22,6 +23,9 @@ export default {
 
     GET_SELECT(state, departamentosAction) {
       state.selectDeptoReg = departamentosAction
+    },
+    GET_SELECT_FILTROS(state, departamentosAction) {
+      state.selectDeptoFiltros = departamentosAction
     },
     GET_PAGINATION(state, departamentosAction) {
       state.pagination = departamentosAction
@@ -56,6 +60,18 @@ export default {
         //Obtiene los departamentos de la region seleccionada
         }).catch(function (error) {
         console.log(error);
+        })
+      },
+
+      DeptoFiltros({commit}){
+        //rootState.users.form.departamento_id = '' //resetar valor del select departamento en el formulario guardar usuario
+        let url = 'departamentos/selectDepartamentoFiltros/';
+        axios.get(url).then(function (response) {
+          let respuesta = response.data;
+          commit('GET_SELECT_FILTROS', respuesta.departamentos);
+        //Obtiene los departamentos de la region seleccionada
+        }).catch(function (error) {
+          console.log(error);
         })
       },
   },

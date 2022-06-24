@@ -24,6 +24,7 @@ export default {
       fecha_nacimiento: '',
       genero: '',
       direccion: '',
+      tipo_departamento_id:'',
       departamento_id: '',
       departamentos: {},
       region_id: '',
@@ -81,6 +82,7 @@ export default {
       state.form.departamento_id = ''
       state.form.region_id = ''
       state.form.cargo_id = ''
+      state.form.tipo_departamento_id= ''
     },
 
     GET_USER(state, data) {
