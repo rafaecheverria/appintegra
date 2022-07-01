@@ -55,6 +55,7 @@ export default {
         rootState.users.form.departamento_id = '' //resetar valor del select departamento en el formulario guardar usuario
         let url = 'departamentos/selectDepartamentoReg/'+id;
         axios.get(url).then(function (response) {
+          console.log(response.data)
         let respuesta = response.data;
         commit('GET_SELECT', respuesta.departamentos);
         //Obtiene los departamentos de la region seleccionada
@@ -63,17 +64,16 @@ export default {
         })
       },
 
-      DeptoFiltros({commit}){
-        //rootState.users.form.departamento_id = '' //resetar valor del select departamento en el formulario guardar usuario
+      async DeptoFiltros({commit}){
         let url = 'departamentos/selectDepartamentoFiltros/';
-        axios.get(url).then(function (response) {
-          let respuesta = response.data;
-          commit('GET_SELECT_FILTROS', respuesta.departamentos);
+        await axios.get(url).then(function (response) {
+          commit('GET_SELECT_FILTROS', response.data.departamentos);
         //Obtiene los departamentos de la region seleccionada
         }).catch(function (error) {
           console.log(error);
         })
       },
+
   },
 }
 
