@@ -39,7 +39,7 @@
                   </ValidationProvider>
                 </div>
                 <div class="text-center">
-                  <button type="submit" class="btn btn-fill btn-info btn-round btn-wd ">Login</button>
+                  <button type="submit" class="btn btn-fill btn-info btn-round btn-wd ">Iniciar Sesión</button>
                   <br>
                   <div class="forgot">
                     <router-link to="/register" class="card-category">

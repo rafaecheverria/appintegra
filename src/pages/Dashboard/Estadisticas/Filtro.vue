@@ -68,21 +68,6 @@
           </ValidationProvider>
           </div>
 
-          <div class="col-lg-2">
-            <label>Nivel</label>
-              <el-select class="select-default"
-                  size="large"
-                  placeholder="Seleccione Nivel"
-                  v-model="filtros.nivel">
-                <el-option value="SALA CUNA MENOR">SALA CUNA MENOR</el-option>
-                <el-option value="SALA CUNA MAYOR">SALA CUNA MAYOR</el-option>
-                <el-option value="MEDIO MENOR">MEDIO MENOR</el-option>
-                <el-option value="MEDIO MAYOR">MEDIO MAYOR</el-option>
-                <el-option value="MEDIOS">MEDIOS</el-option>
-                <el-option value="HETEROGENEO">HETEROGENEO</el-option>
-              </el-select>
-          </div>
-
           <div class="col-lg-2 col-sm-12">
             <label></label>
             <l-button type="info" wide @click="consultar()">
