@@ -1,16 +1,28 @@
 <template>
     <div class="row">
          <div class="col-lg-2">
+          
           <label>Mes/Año</label>
             <fg-input>
+              <ValidationProvider
+                name="mes"
+                rules="required"
+                v-slot="{ passed, failed }"
+              >
               <el-date-picker
                 v-model="filtros.fecha"
                 format="MM-yyyy"
                 type="month"
-                placeholder="Seleccione Año"
+                placeholder="Seleccione Mes y Año"
+                :error="failed ? 'Mes es un campo requerido': null"
+                :hasSuccess="passed"
                 >
+              >
               </el-date-picker>
+              <div class="text-danger invalid-feedback" style="display: block;"> {{ failed ? 'Mes/Año es un campo requerido': null }} </div>
+            </ValidationProvider>
             </fg-input>
+          
           </div>
 
            <div class="col-lg-3">
@@ -70,7 +82,7 @@
 
           <div class="col-lg-2 col-sm-12">
             <label></label>
-            <l-button type="info" wide @click="consultar()">
+            <l-button type="info" wide @click="consultarJardin()">
                 <span class="btn-label">
                     <i class="fa fa-send"></i>
                 </span>
@@ -116,11 +128,14 @@ export default {
           selectDepartamentosFiltro: 'departamentos/DeptoFiltros',
           selectJornadas: 'estadisticas/changeDepto',
           limpiarFormulario: 'estadisticas/clearForm',
+          filtrarBusqueda: 'estadisticas/filtrarBusqueda'
+         // consultar: 'estadisticas/consultar'
         }),
-      consultar(){
-        console.log(this.mes)
-      },
+        consultarJardin(){
+          this.filtrarBusqueda( this.filtros );
+        }
     },
+
      mounted () {
       this.selectDepartamentosFiltro()
       this.limpiarFormulario()

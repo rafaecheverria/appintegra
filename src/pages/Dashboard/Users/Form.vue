@@ -14,8 +14,7 @@
       <div class="card-body">
     <ValidationObserver ref="form" v-slot="{ handleSubmit }">
         <!-- Fila 1 -->
-        <form @submit.prevent='handleSubmit(enviarFormulario)'>
-
+      <form @submit.prevent='handleSubmit(enviarFormulario)'>
        <div class="row">
           <div class="col-lg-4">
             <ValidationProvider
@@ -251,7 +250,7 @@
 import { mapFields } from 'vuex-map-fields'
 import { mapActions, mapState } from 'vuex'
 import { Select, Option, DatePicker} from 'element-ui'
-import { Load } from 'src/components/index'
+import  { Load }  from 'src/components/index'
 import Swal from 'sweetalert2'
 
   export default {

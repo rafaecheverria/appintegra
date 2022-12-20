@@ -44,16 +44,26 @@ export default {
   actions: {
     changeDepto({commit, state}, id){
       state.filtros.jornada_id = '' //resetar valor del select departamento en el formulario guardar usuario
-      let url = 'jornadas/selectJornadasDepto/'+id;
+      let url = 'grupos/selectGruposDepto/'+id;
       axios.get(url).then(function (response) {
       console.log(response.data);
       let respuesta = response.data;
       commit('GET_SELECT_JORNADAS', respuesta.jornadas);
-      //Obtiene los departamentos de la region seleccionada
       }).catch(function (error) {
       console.log(error);
       })
     },
+
+    async filtrarBusqueda( { state } ){
+      let url = 'grupos/traerDatosFiltroEstadisticas/';
+       await axios.post(url, state.filtros).then(function (response) {
+          console.log(response.data);
+         // let respuesta = response.data;
+         //commit('GET_SELECT_JORNADAS', respuesta.jornadas);
+          }).catch(function (error) {
+          console.log(error);
+          })
+    },  
 
     /*changeDepto({commit, state}, id){
       state.filtros.jornada_id = '' //resetar valor del select departamento en el formulario guardar usuario
